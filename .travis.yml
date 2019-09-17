@@ -10,4 +10,5 @@ node_js:
   - 10
   - 12
 
-script: npm test
+script:
+  - npm test
