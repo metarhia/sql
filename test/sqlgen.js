@@ -109,7 +109,7 @@ test.testSync('Select few where avg', (test, { builder, params }) => {
   test.strictSame(params.build(), [3]);
 });
 
-test.testSync('Select few where avg', (test, { builder, params }) => {
+test.testSync('Select few where min', (test, { builder, params }) => {
   builder
     .from('table')
     .select('f1', 'f2')
@@ -120,6 +120,23 @@ test.testSync('Select few where avg', (test, { builder, params }) => {
   test.strictSame(
     query,
     'SELECT "f1", "f2", min("f0") FROM "table" ' +
+      'WHERE "f1" = $1 GROUP BY "f1", "f2"'
+  );
+  test.strictSame(params.build(), [3]);
+});
+
+test.testSync('Select few where two min expr', (test, { builder, params }) => {
+  builder
+    .from('table')
+    .select('f1', 'f2')
+    .where('f1', '=', 3)
+    .groupBy('f1', 'f2')
+    .min('f0')
+    .min('f3 / f0');
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'SELECT "f1", "f2", min("f0"), min("f3 / f0") FROM "table" ' +
       'WHERE "f1" = $1 GROUP BY "f1", "f2"'
   );
   test.strictSame(params.build(), [3]);
