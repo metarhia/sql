@@ -178,7 +178,7 @@ test.testSync('Select all order offset', (test, { builder, params }) => {
     .orderBy('f1')
     .offset(10);
   const query = builder.build();
-  test.strictSame(query, 'SELECT * FROM "table" ORDER BY "f1" ASC OFFSET $1');
+  test.strictSame(query, 'SELECT * FROM "table" ORDER BY "f1" OFFSET $1');
   test.strictSame(params.build(), [10]);
 });
 
@@ -210,7 +210,7 @@ test.testSync(
     test.strictSame(
       query,
       'SELECT "f1", "f3" FROM "table" WHERE "f2" = $1 ' +
-        'ORDER BY "f1" ASC OFFSET $2'
+        'ORDER BY "f1" OFFSET $2'
     );
     test.strictSame(params.build(), [3, 10]);
   }
