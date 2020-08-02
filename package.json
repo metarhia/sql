@@ -41,8 +41,5 @@
     "remark-cli": "^7.0.0",
     "remark-preset-lint-metarhia": "^2.0.0",
     "remark-validate-links": "^9.0.1"
-  },
-  "dependencies": {
-    "@metarhia/common": "^2.1.0"
   }
 }
