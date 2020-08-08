@@ -305,6 +305,16 @@ test.testSync('Select where !=', (test, { builder, params }) => {
   test.strictSame(params.build(), ['abc']);
 });
 
+test.testSync('Select where =', (test, { builder, params }) => {
+  builder
+    .from('table')
+    .where('f1', '=', 'abc')
+    .whereEq('f2', 'cba');
+  const query = builder.build();
+  test.strictSame(query, 'SELECT * FROM "table" WHERE "f1" = $1 AND "f2" = $2');
+  test.strictSame(params.build(), ['abc', 'cba']);
+});
+
 test.testSync('Select multiple from', (test, { builder, params }) => {
   builder.from('table1').from('table2');
   const query = builder.build();
@@ -327,6 +337,52 @@ test.testSync('Select rows with where', (test, { builder, params }) => {
   const query = builder.build();
   test.strictSame(query, 'SELECT * FROM "table1", "table2" WHERE "f1" = $1');
   test.strictSame(params.build(), ['abc']);
+});
+
+test.testSync('Select where >', (test, { builder, params }) => {
+  builder
+    .from('table')
+    .where('f1', '>', 'abc')
+    .whereMore('f2', 42);
+  const query = builder.build();
+  test.strictSame(query, 'SELECT * FROM "table" WHERE "f1" > $1 AND "f2" > $2');
+  test.strictSame(params.build(), ['abc', 42]);
+});
+
+test.testSync('Select where >=', (test, { builder, params }) => {
+  builder
+    .from('table')
+    .where('f1', '>=', 'abc')
+    .whereMoreEq('f2', 42);
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'SELECT * FROM "table" WHERE "f1" >= $1 AND "f2" >= $2'
+  );
+  test.strictSame(params.build(), ['abc', 42]);
+});
+
+test.testSync('Select where <', (test, { builder, params }) => {
+  builder
+    .from('table')
+    .where('f1', '<', 'abc')
+    .whereLess('f2', 42);
+  const query = builder.build();
+  test.strictSame(query, 'SELECT * FROM "table" WHERE "f1" < $1 AND "f2" < $2');
+  test.strictSame(params.build(), ['abc', 42]);
+});
+
+test.testSync('Select where <=', (test, { builder, params }) => {
+  builder
+    .from('table')
+    .where('f1', '<=', 'abc')
+    .whereLessEq('f2', 42);
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'SELECT * FROM "table" WHERE "f1" <= $1 AND "f2" <= $2'
+  );
+  test.strictSame(params.build(), ['abc', 42]);
 });
 
 test.testSync(
