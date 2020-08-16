@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "strict": true,
+    "noEmit": true,
+    "baseUrl": ".",
+    "preserveWatchOutput": true,
+    "paths": {
+      "*": ["../node_modules/*"]
+    }
+  },
+  "include": ["*.ts", "lib/**/*.ts", "test/**/*.ts"]
+}
