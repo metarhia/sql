@@ -535,3 +535,95 @@ test.testSync('Select where between multiple', (test, { builder, params }) => {
   const args = [1, 100, 'xzy', 'yyy', 'aaa', 'yyy', 42, 100];
   test.strictSame(params.build(), args);
 });
+
+test.testSync('Select where in nested', (test, { builder, params }) => {
+  const nestedQuery = new SelectBuilder(params);
+  nestedQuery
+    .from('table2')
+    .select('a')
+    .where('id', '>', 42);
+
+  builder.from('table1').whereIn('a', nestedQuery);
+  test.strictSame(
+    builder.build(),
+    `SELECT * FROM "table1" WHERE "a" IN
+       (SELECT "a" FROM "table2" WHERE "id" > $1)`.replace(/\n\s+/g, ' ')
+  );
+  test.strictSame(params.build(), [42]);
+});
+
+test.testSync('Select where not in nested', (test, { builder, params }) => {
+  const nestedQuery = new SelectBuilder(params);
+  nestedQuery
+    .from('table2')
+    .select('a')
+    .where('id', '>', 42);
+
+  builder.from('table1').whereNotIn('a', nestedQuery);
+  test.strictSame(
+    builder.build(),
+    `SELECT * FROM "table1" WHERE "a" NOT IN
+       (SELECT "a" FROM "table2" WHERE "id" > $1)`.replace(/\n\s+/g, ' ')
+  );
+  test.strictSame(params.build(), [42]);
+});
+
+test.testSync('Select where any nested', (test, { builder, params }) => {
+  const nestedQuery = new SelectBuilder(params);
+  nestedQuery
+    .from('table2')
+    .select('a')
+    .where('id', '>', 42);
+
+  builder.from('table1').whereAny('a', nestedQuery);
+  test.strictSame(
+    builder.build(),
+    `SELECT * FROM "table1" WHERE "a" = ANY
+       (SELECT "a" FROM "table2" WHERE "id" > $1)`.replace(/\n\s+/g, ' ')
+  );
+  test.strictSame(params.build(), [42]);
+});
+
+test.testSync(
+  'Select where between nested simple',
+  (test, { builder, params }) => {
+    const nestedStart = new RawBuilder(() => 'SELECT -1', params);
+    const nestedEnd = new RawBuilder(() => 'SELECT 42', params);
+    builder
+      .from('table1')
+      .whereBetween('a', nestedStart, nestedEnd)
+      .whereBetween('b', nestedEnd, nestedStart, true);
+    const expectedSql = `SELECT * FROM "table1"
+     WHERE "a" BETWEEN (SELECT -1) AND (SELECT 42)
+       AND "b" BETWEEN SYMMETRIC (SELECT 42) AND (SELECT -1)`;
+    test.strictSame(builder.build(), expectedSql.replace(/\n\s+/g, ' '));
+    test.strictSame(params.build(), []);
+  }
+);
+
+test.testSync(
+  'Select where between nested complex',
+  (test, { builder, params }) => {
+    const nestedStart = new SelectBuilder(params)
+      .from('table2')
+      .select('f1')
+      .where('f2', '>', 42);
+    const nestedEnd = new SelectBuilder(params)
+      .from('table3')
+      .select('f1')
+      .where('f2', '<', 42);
+    builder
+      .from('table1')
+      .whereBetween('a', nestedStart, nestedEnd)
+      .whereBetween('b', nestedEnd, nestedStart, true);
+    const expectedSql = `SELECT * FROM "table1"
+         WHERE "a" BETWEEN
+            (SELECT "f1" FROM "table2" WHERE "f2" > $1) AND
+            (SELECT "f1" FROM "table3" WHERE "f2" < $2)
+          AND "b" BETWEEN SYMMETRIC
+            (SELECT "f1" FROM "table3" WHERE "f2" < $3) AND
+            (SELECT "f1" FROM "table2" WHERE "f2" > $4)`;
+    test.strictSame(builder.build(), expectedSql.replace(/\n\s+/g, ' '));
+    test.strictSame(params.build(), [42, 42, 42, 42]);
+  }
+);
