@@ -607,23 +607,25 @@ test.testSync(
     const nestedStart = new SelectBuilder(params)
       .from('table2')
       .select('f1')
-      .where('f2', '>', 42);
+      .where('f2', '>', 42)
+      .limit(1);
     const nestedEnd = new SelectBuilder(params)
       .from('table3')
       .select('f1')
-      .where('f2', '<', 42);
+      .where('f2', '<', 42)
+      .limit(1);
     builder
       .from('table1')
       .whereBetween('a', nestedStart, nestedEnd)
       .whereBetween('b', nestedEnd, nestedStart, true);
     const expectedSql = `SELECT * FROM "table1"
          WHERE "a" BETWEEN
-            (SELECT "f1" FROM "table2" WHERE "f2" > $1) AND
-            (SELECT "f1" FROM "table3" WHERE "f2" < $2)
+            (SELECT "f1" FROM "table2" WHERE "f2" > $1 LIMIT $2) AND
+            (SELECT "f1" FROM "table3" WHERE "f2" < $3 LIMIT $4)
           AND "b" BETWEEN SYMMETRIC
-            (SELECT "f1" FROM "table3" WHERE "f2" < $3) AND
-            (SELECT "f1" FROM "table2" WHERE "f2" > $4)`;
+            (SELECT "f1" FROM "table3" WHERE "f2" < $5 LIMIT $6) AND
+            (SELECT "f1" FROM "table2" WHERE "f2" > $7 LIMIT $8)`;
     test.strictSame(builder.build(), expectedSql.replace(/\n\s+/g, ' '));
-    test.strictSame(params.build(), [42, 42, 42, 42]);
+    test.strictSame(params.build(), [42, 1, 42, 1, 42, 1, 42, 1]);
   }
 );
