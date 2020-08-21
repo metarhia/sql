@@ -1,9 +1,4 @@
-export interface ParamsBuilderOptions {}
-
-export class ParamsBuilder<
-  P = any,
-  O extends ParamsBuilderOptions = ParamsBuilderOptions
-> {
+export class ParamsBuilder<P = any, O = undefined> {
   // Add passed value to parameters
   // Returns a string name to put in an sql query
   add(value: any, options?: O): string;
