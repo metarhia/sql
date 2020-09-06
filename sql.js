@@ -3,6 +3,7 @@
 const { QueryBuilder } = require('./lib/query-builder');
 const { SelectBuilder } = require('./lib/select-builder');
 const { RawBuilder } = require('./lib/raw-builder');
+const { ConditionsBuilder } = require('./lib/conditions-builder');
 const { ParamsBuilder } = require('./lib/params-builder');
 const { PostgresParamsBuilder } = require('./lib/pg-params-builder');
 
@@ -17,6 +18,7 @@ module.exports = {
   QueryBuilder,
   SelectBuilder,
   RawBuilder,
+  ConditionsBuilder,
   ParamsBuilder,
   PostgresParamsBuilder,
   pg,
