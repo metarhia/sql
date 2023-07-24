@@ -405,10 +405,7 @@ test.testSync('conditions between multiple', (test, { builder, params }) => {
 
 test.testSync('condition in nested', (test, { builder, params }) => {
   const nestedQuery = new SelectBuilder(params);
-  nestedQuery
-    .from('table2')
-    .select('a')
-    .where('id', '>', 42);
+  nestedQuery.from('table2').select('a').where('id', '>', 42);
 
   builder.in('a', nestedQuery);
   test.strictSame(
@@ -420,10 +417,7 @@ test.testSync('condition in nested', (test, { builder, params }) => {
 
 test.testSync('condition orIn nested', (test, { builder, params }) => {
   const nestedQuery = new SelectBuilder(params);
-  nestedQuery
-    .from('table2')
-    .select('a')
-    .where('id', '>', 42);
+  nestedQuery.from('table2').select('a').where('id', '>', 42);
 
   builder.orIn('a', nestedQuery);
   test.strictSame(
@@ -452,10 +446,7 @@ test.testSync('condition in and orIn nested', (test, { builder, params }) => {
 
 test.testSync('condition notIn nested', (test, { builder, params }) => {
   const nestedQuery = new SelectBuilder(params);
-  nestedQuery
-    .from('table2')
-    .select('a')
-    .where('id', '>', 42);
+  nestedQuery.from('table2').select('a').where('id', '>', 42);
 
   builder.notIn('a', nestedQuery);
   test.strictSame(
@@ -467,10 +458,7 @@ test.testSync('condition notIn nested', (test, { builder, params }) => {
 
 test.testSync('condition orNotIn nested', (test, { builder, params }) => {
   const nestedQuery = new SelectBuilder(params);
-  nestedQuery
-    .from('table2')
-    .select('a')
-    .where('id', '>', 42);
+  nestedQuery.from('table2').select('a').where('id', '>', 42);
 
   builder.orNotIn('a', nestedQuery);
   test.strictSame(
@@ -482,10 +470,7 @@ test.testSync('condition orNotIn nested', (test, { builder, params }) => {
 
 test.testSync('condition any nested', (test, { builder, params }) => {
   const nestedQuery = new SelectBuilder(params);
-  nestedQuery
-    .from('table2')
-    .select('a')
-    .where('id', '>', 42);
+  nestedQuery.from('table2').select('a').where('id', '>', 42);
 
   builder.any('a', nestedQuery);
   test.strictSame(
@@ -497,10 +482,7 @@ test.testSync('condition any nested', (test, { builder, params }) => {
 
 test.testSync('condition orAny nested', (test, { builder, params }) => {
   const nestedQuery = new SelectBuilder(params);
-  nestedQuery
-    .from('table2')
-    .select('a')
-    .where('id', '>', 42);
+  nestedQuery.from('table2').select('a').where('id', '>', 42);
 
   builder.orAny('a', nestedQuery);
   test.strictSame(

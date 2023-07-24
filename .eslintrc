@@ -1,3 +1,6 @@
 {
-  "extends": ["metarhia", "plugin:prettier/recommended"]
+  "extends": ["metarhia", "plugin:prettier/recommended"],
+  "rules": {
+    "class-methods-use-this": "off"
+  }
 }
