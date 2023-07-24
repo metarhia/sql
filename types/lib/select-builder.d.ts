@@ -22,6 +22,16 @@ export class SelectBuilder extends QueryBuilder<SelectBuilderOptions> {
 
   where(key: string, cond: string, value: ConditionValue): this;
 
+  whereEq(key: string, value: ConditionValue): this;
+
+  whereMore(key: string, value: ConditionValue): this;
+
+  whereMoreEq(key: string, value: ConditionValue): this;
+
+  whereLess(key: string, value: ConditionValue): this;
+
+  whereLessEq(key: string, value: ConditionValue): this;
+
   orWhere(key: string, cond: string, value: ConditionValue): this;
 
   whereNot(key: string, cond: string, value: ConditionValue): this;

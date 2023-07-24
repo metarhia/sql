@@ -5,10 +5,7 @@ const { pg } = require('..');
 
 testSync('Must correctly export pg utility', test => {
   const { builder, params } = pg();
-  builder
-    .select('f1')
-    .from('table1')
-    .where('f2', '=', 42);
+  builder.select('f1').from('table1').where('f2', '=', 42);
   test.strictEqual(
     builder.build(),
     'SELECT "f1" FROM "table1" WHERE "f2" = $1'
@@ -18,10 +15,7 @@ testSync('Must correctly export pg utility', test => {
 
 testSync('Must correctly export pg utility with handler', test => {
   const { builder, params } = pg(builder => {
-    builder
-      .select('f1')
-      .from('table1')
-      .where('f2', '=', 42);
+    builder.select('f1').from('table1').where('f2', '=', 42);
   });
   test.strictEqual(
     builder.build(),
