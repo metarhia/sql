@@ -1,13 +1,14 @@
 import { ParamsBuilder } from './params-builder';
 import { QueryBuilder, QueryBuilderOptions } from './query-builder';
+import { QueryConditionsBuilder } from './query-conditions-builder';
 
 export interface SelectBuilderOptions extends QueryBuilderOptions {}
 
-type QueryValue = QueryBuilder | ((builder: SelectBuilder) => QueryBuilder);
+export type QueryValue = QueryBuilder | ((builder: SelectBuilder) => QueryBuilder);
 
-type ConditionValue = any | QueryValue;
+export type ConditionValue = any | QueryValue;
 
-export class SelectBuilder extends QueryBuilder<SelectBuilderOptions> {
+export class SelectBuilder extends QueryConditionsBuilder<SelectBuilderOptions, ConditionValue> {
   constructor(params: ParamsBuilder, options?: SelectBuilderOptions);
 
   from(tableName: string): this;
@@ -19,76 +20,6 @@ export class SelectBuilder extends QueryBuilder<SelectBuilderOptions> {
   innerJoin(tableName: string, leftKey: string, rightKey: string): this;
 
   distinct(): this;
-
-  where(key: string, cond: string, value: ConditionValue): this;
-
-  whereEq(key: string, value: ConditionValue): this;
-
-  whereMore(key: string, value: ConditionValue): this;
-
-  whereMoreEq(key: string, value: ConditionValue): this;
-
-  whereLess(key: string, value: ConditionValue): this;
-
-  whereLessEq(key: string, value: ConditionValue): this;
-
-  orWhere(key: string, cond: string, value: ConditionValue): this;
-
-  whereNot(key: string, cond: string, value: ConditionValue): this;
-
-  orWhereNot(key: string, cond: string, value: ConditionValue): this;
-
-  whereNull(key: string): this;
-
-  orWhereNull(key: string): this;
-
-  whereNotNull(key: string): this;
-
-  orWhereNotNull(key: string): this;
-
-  whereBetween(
-    key: string,
-    from: ConditionValue,
-    to: ConditionValue,
-    symmetric?: boolean
-  ): this;
-
-  orWhereBetween(
-    key: string,
-    from: ConditionValue,
-    to: ConditionValue,
-    symmetric?: boolean
-  ): this;
-
-  whereNotBetween(
-    key: string,
-    from: ConditionValue,
-    to: ConditionValue,
-    symmetric?: boolean
-  ): this;
-
-  orWhereNotBetween(
-    key: string,
-    from: ConditionValue,
-    to: ConditionValue,
-    symmetric?: boolean
-  ): this;
-
-  whereIn(key: string, conds: Iterable<any> | QueryValue): this;
-
-  orWhereIn(key: string, conds: Iterable<any> | QueryValue): this;
-
-  whereNotIn(key: string, conds: Iterable<any> | QueryValue): this;
-
-  orWhereNotIn(key: string, conds: Iterable<any> | QueryValue): this;
-
-  whereAny(key: string, value: ConditionValue): this;
-
-  orWhereAny(key: string, value: ConditionValue): this;
-
-  whereExists(subquery: QueryValue): this;
-
-  orWhereExists(subquery: QueryValue): this;
 
   orderBy(field: string, dir?: 'ASC' | 'DESC'): this;
 
