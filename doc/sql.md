@@ -4,7 +4,10 @@
   - [QueryBuilder](#class-querybuilder)
     - [QueryBuilder.prototype.constructor](#querybuilderprototypeconstructorparams-options)
     - [QueryBuilder.prototype.build](#querybuilderprototypebuild)
-  - [SelectBuilder](#class-selectbuilder-extends-querybuilder)
+    - [QueryBuilder.prototype.buildParams](#querybuilderprototypebuildparams)
+    - [QueryBuilder.prototype.makeKeyOrExpr](#querybuilderprototypemakekeyorexprvalue-wrap--false)
+    - [QueryBuilder.prototype.makeParamValue](#querybuilderprototypemakeparamvaluevalue)
+  - [SelectBuilder](#class-selectbuilder-extends-queryconditionsbuilder)
     - [SelectBuilder.prototype.constructor](#selectbuilderprototypeconstructorparams-options)
     - [SelectBuilder.prototype.\_addSelectClause](#selectbuilderprototype_addselectclausetype-field-alias)
     - [SelectBuilder.prototype.avg](#selectbuilderprototypeavgfield-alias)
@@ -18,45 +21,40 @@
     - [SelectBuilder.prototype.max](#selectbuilderprototypemaxfield-alias)
     - [SelectBuilder.prototype.min](#selectbuilderprototypeminfield-alias)
     - [SelectBuilder.prototype.offset](#selectbuilderprototypeoffsetoffset)
-    - [SelectBuilder.prototype.orWhere](#selectbuilderprototypeorwherekey-cond-value)
-    - [SelectBuilder.prototype.orWhereAny](#selectbuilderprototypeorwhereanykey-value)
-    - [SelectBuilder.prototype.orWhereBetween](#selectbuilderprototypeorwherebetweenkey-from-to-symmetric)
-    - [SelectBuilder.prototype.orWhereExists](#selectbuilderprototypeorwhereexistssubquery)
-    - [SelectBuilder.prototype.orWhereIn](#selectbuilderprototypeorwhereinkey-conds)
-    - [SelectBuilder.prototype.orWhereNot](#selectbuilderprototypeorwherenotkey-cond-value)
-    - [SelectBuilder.prototype.orWhereNotBetween](#selectbuilderprototypeorwherenotbetweenkey-from-to-symmetric)
-    - [SelectBuilder.prototype.orWhereNotIn](#selectbuilderprototypeorwherenotinkey-conds)
-    - [SelectBuilder.prototype.orWhereNotNull](#selectbuilderprototypeorwherenotnullkey)
-    - [SelectBuilder.prototype.orWhereNull](#selectbuilderprototypeorwherenullkey)
     - [SelectBuilder.prototype.orderBy](#selectbuilderprototypeorderbyfield-dir--asc)
-    - [SelectBuilder.prototype.processFrom](#selectbuilderprototypeprocessfromfrom)
-    - [SelectBuilder.prototype.processOrder](#selectbuilderprototypeprocessorderclauses)
-    - [SelectBuilder.prototype.processSelect](#selectbuilderprototypeprocessselectselect)
     - [SelectBuilder.prototype.select](#selectbuilderprototypeselectfields)
     - [SelectBuilder.prototype.selectAs](#selectbuilderprototypeselectasfield-alias)
     - [SelectBuilder.prototype.sum](#selectbuilderprototypesumfield-alias)
-    - [SelectBuilder.prototype.where](#selectbuilderprototypewherekey-cond-value)
-    - [SelectBuilder.prototype.whereAny](#selectbuilderprototypewhereanykey-value)
-    - [SelectBuilder.prototype.whereBetween](#selectbuilderprototypewherebetweenkey-from-to-symmetric)
-    - [SelectBuilder.prototype.whereEq](#selectbuilderprototypewhereeqkey-value)
-    - [SelectBuilder.prototype.whereExists](#selectbuilderprototypewhereexistssubquery)
-    - [SelectBuilder.prototype.whereIn](#selectbuilderprototypewhereinkey-conds)
-    - [SelectBuilder.prototype.whereLess](#selectbuilderprototypewherelesskey-value)
-    - [SelectBuilder.prototype.whereLessEq](#selectbuilderprototypewherelesseqkey-value)
-    - [SelectBuilder.prototype.whereMore](#selectbuilderprototypewheremorekey-value)
-    - [SelectBuilder.prototype.whereMoreEq](#selectbuilderprototypewheremoreeqkey-value)
-    - [SelectBuilder.prototype.whereNot](#selectbuilderprototypewherenotkey-cond-value)
-    - [SelectBuilder.prototype.whereNotBetween](#selectbuilderprototypewherenotbetweenkey-from-to-symmetric)
-    - [SelectBuilder.prototype.whereNotIn](#selectbuilderprototypewherenotinkey-conds)
-    - [SelectBuilder.prototype.whereNotNull](#selectbuilderprototypewherenotnullkey)
-    - [SelectBuilder.prototype.whereNull](#selectbuilderprototypewherenullkey)
   - [RawBuilder](#class-rawbuilder-extends-querybuilder)
     - [RawBuilder.prototype.constructor](#rawbuilderprototypeconstructorsqltemplate)
     - [RawBuilder.prototype.build](#rawbuilderprototypebuild)
+  - [UpdateBuilder](#class-updatebuilder-extends-queryconditionsbuilder)
+    - [UpdateBuilder.prototype.constructor](#updatebuilderprototypeconstructorparams-options)
+    - [UpdateBuilder.prototype.build](#updatebuilderprototypebuild)
+    - [UpdateBuilder.prototype.from](#updatebuilderprototypefromtablename-alias)
+    - [UpdateBuilder.prototype.set](#updatebuilderprototypesetcolumn-value)
+    - [UpdateBuilder.prototype.setKey](#updatebuilderprototypesetkeycolumn-key)
+    - [UpdateBuilder.prototype.table](#updatebuilderprototypetabletablename-alias)
+  - [DeleteBuilder](#class-deletebuilder-extends-queryconditionsbuilder)
+    - [DeleteBuilder.prototype.constructor](#deletebuilderprototypeconstructorparams-options)
+    - [DeleteBuilder.prototype.build](#deletebuilderprototypebuild)
+    - [DeleteBuilder.prototype.from](#deletebuilderprototypefromtablename-alias)
+  - [InsertBuilder](#class-insertbuilder-extends-querybuilder)
+    - [InsertBuilder.prototype.constructor](#insertbuilderprototypeconstructorparams-options)
+    - [InsertBuilder.prototype.build](#insertbuilderprototypebuild)
+    - [InsertBuilder.prototype.table](#insertbuilderprototypetabletablename-alias)
+    - [InsertBuilder.prototype.value](#insertbuilderprototypevaluekey-value)
+  - [PgInsertBuilder](#class-pginsertbuilder-extends-insertbuilder)
+    - [PgInsertBuilder.prototype.constructor](#pginsertbuilderprototypeconstructorparams-options)
+    - [PgInsertBuilder.prototype.build](#pginsertbuilderprototypebuild)
+    - [PgInsertBuilder.prototype.conflict](#pginsertbuilderprototypeconflicttarget-action)
+    - [PgInsertBuilder.prototype.returning](#pginsertbuilderprototypereturningkey-alias)
   - [ConditionsBuilder](#class-conditionsbuilder-extends-querybuilder)
     - [ConditionsBuilder.prototype.constructor](#conditionsbuilderprototypeconstructorparams-options)
     - [ConditionsBuilder.prototype.and](#conditionsbuilderprototypeandkey-cond-value)
     - [ConditionsBuilder.prototype.andConds](#conditionsbuilderprototypeandcondsconditions)
+    - [ConditionsBuilder.prototype.andKey](#conditionsbuilderprototypeandkeyleftkey-cond-rightkey)
+    - [ConditionsBuilder.prototype.andRaw](#conditionsbuilderprototypeandrawsql)
     - [ConditionsBuilder.prototype.any](#conditionsbuilderprototypeanykey-value)
     - [ConditionsBuilder.prototype.between](#conditionsbuilderprototypebetweenkey-from-to-symmetric--false)
     - [ConditionsBuilder.prototype.build](#conditionsbuilderprototypebuild)
@@ -65,7 +63,9 @@
     - [ConditionsBuilder.prototype.not](#conditionsbuilderprototypenotkey-cond-value)
     - [ConditionsBuilder.prototype.notBetween](#conditionsbuilderprototypenotbetweenkey-from-to-symmetric--false)
     - [ConditionsBuilder.prototype.notIn](#conditionsbuilderprototypenotinkey-conds)
+    - [ConditionsBuilder.prototype.notKey](#conditionsbuilderprototypenotkeyleftkey-cond-rightkey)
     - [ConditionsBuilder.prototype.notNull](#conditionsbuilderprototypenotnullkey)
+    - [ConditionsBuilder.prototype.notRaw](#conditionsbuilderprototypenotrawsql)
     - [ConditionsBuilder.prototype.null](#conditionsbuilderprototypenullkey)
     - [ConditionsBuilder.prototype.or](#conditionsbuilderprototypeorkey-cond-value)
     - [ConditionsBuilder.prototype.orAny](#conditionsbuilderprototypeoranykey-value)
@@ -73,11 +73,15 @@
     - [ConditionsBuilder.prototype.orConds](#conditionsbuilderprototypeorcondsconditions)
     - [ConditionsBuilder.prototype.orExists](#conditionsbuilderprototypeorexistssubquery)
     - [ConditionsBuilder.prototype.orIn](#conditionsbuilderprototypeorinkey-conds)
+    - [ConditionsBuilder.prototype.orKey](#conditionsbuilderprototypeorkeyleftkey-cond-rightkey)
     - [ConditionsBuilder.prototype.orNot](#conditionsbuilderprototypeornotkey-cond-value)
     - [ConditionsBuilder.prototype.orNotBetween](#conditionsbuilderprototypeornotbetweenkey-from-to-symmetric--false)
     - [ConditionsBuilder.prototype.orNotIn](#conditionsbuilderprototypeornotinkey-conds)
+    - [ConditionsBuilder.prototype.orNotKey](#conditionsbuilderprototypeornotkeyleftkey-cond-rightkey)
     - [ConditionsBuilder.prototype.orNotNull](#conditionsbuilderprototypeornotnullkey)
+    - [ConditionsBuilder.prototype.orNotRaw](#conditionsbuilderprototypeornotrawsql)
     - [ConditionsBuilder.prototype.orNull](#conditionsbuilderprototypeornullkey)
+    - [ConditionsBuilder.prototype.orRaw](#conditionsbuilderprototypeorrawsql)
   - [ParamsBuilder](#class-paramsbuilder)
     - [ParamsBuilder.prototype.constructor](#paramsbuilderprototypeconstructor)
     - [ParamsBuilder.prototype.add](#paramsbuilderprototypeaddvalue-options)
@@ -87,6 +91,10 @@
     - [PostgresParamsBuilder.prototype.add](#postgresparamsbuilderprototypeaddvalue-options)
     - [PostgresParamsBuilder.prototype.build](#postgresparamsbuilderprototypebuild)
   - [pg](#pghandler)
+  - [pgQuerySelect](#pgqueryselectpg-handler)
+  - [pgQueryInsert](#pgqueryinsertpg-handler)
+  - [pgQueryUpdate](#pgqueryupdatepg-handler)
+  - [pgQueryDelete](#pgquerydeletepg-handler)
 
 ## Interface: sql
 
@@ -106,7 +114,17 @@ _Returns:_ [`<string>`][string]
 
 Build and return the SQL query
 
-### class SelectBuilder extends [QueryBuilder][sql-querybuilder]
+#### QueryBuilder.prototype.buildParams()
+
+_Returns:_ `<Array<unknown>>`
+
+Build params for this query
+
+#### QueryBuilder.prototype.makeKeyOrExpr(value, wrap = false)
+
+#### QueryBuilder.prototype.makeParamValue(value)
+
+### class SelectBuilder extends QueryConditionsBuilder
 
 #### SelectBuilder.prototype.constructor(params, options)
 
@@ -134,33 +152,7 @@ Build and return the SQL query
 
 #### SelectBuilder.prototype.offset(offset)
 
-#### SelectBuilder.prototype.orWhere(key, cond, value)
-
-#### SelectBuilder.prototype.orWhereAny(key, value)
-
-#### SelectBuilder.prototype.orWhereBetween(key, from, to, symmetric)
-
-#### SelectBuilder.prototype.orWhereExists(subquery)
-
-#### SelectBuilder.prototype.orWhereIn(key, conds)
-
-#### SelectBuilder.prototype.orWhereNot(key, cond, value)
-
-#### SelectBuilder.prototype.orWhereNotBetween(key, from, to, symmetric)
-
-#### SelectBuilder.prototype.orWhereNotIn(key, conds)
-
-#### SelectBuilder.prototype.orWhereNotNull(key)
-
-#### SelectBuilder.prototype.orWhereNull(key)
-
 #### SelectBuilder.prototype.orderBy(field, dir = 'ASC')
-
-#### SelectBuilder.prototype.processFrom(from)
-
-#### SelectBuilder.prototype.processOrder(clauses)
-
-#### SelectBuilder.prototype.processSelect(select)
 
 #### SelectBuilder.prototype.select(...fields)
 
@@ -168,45 +160,57 @@ Build and return the SQL query
 
 #### SelectBuilder.prototype.sum(field, alias)
 
-#### SelectBuilder.prototype.where(key, cond, value)
-
-#### SelectBuilder.prototype.whereAny(key, value)
-
-#### SelectBuilder.prototype.whereBetween(key, from, to, symmetric)
-
-#### SelectBuilder.prototype.whereEq(key, value)
-
-#### SelectBuilder.prototype.whereExists(subquery)
-
-#### SelectBuilder.prototype.whereIn(key, conds)
-
-#### SelectBuilder.prototype.whereLess(key, value)
-
-#### SelectBuilder.prototype.whereLessEq(key, value)
-
-#### SelectBuilder.prototype.whereMore(key, value)
-
-#### SelectBuilder.prototype.whereMoreEq(key, value)
-
-#### SelectBuilder.prototype.whereNot(key, cond, value)
-
-#### SelectBuilder.prototype.whereNotBetween(key, from, to, symmetric)
-
-#### SelectBuilder.prototype.whereNotIn(key, conds)
-
-#### SelectBuilder.prototype.whereNotNull(key)
-
-#### SelectBuilder.prototype.whereNull(key)
-
 ### class RawBuilder extends [QueryBuilder][sql-querybuilder]
 
 #### RawBuilder.prototype.constructor(sqlTemplate)
 
-- `sqlTemplate`: [`<Function>`][function]
+- `sqlTemplate`: [`<Function>`][function] function or sql string
   - `params`: [`<ParamsBuilder>`][paramsbuilder]
 - _Returns:_ [`<string>`][string] query
 
 #### RawBuilder.prototype.build()
+
+### class UpdateBuilder extends QueryConditionsBuilder
+
+#### UpdateBuilder.prototype.constructor(params, options)
+
+#### UpdateBuilder.prototype.build()
+
+#### UpdateBuilder.prototype.from(tableName, alias)
+
+#### UpdateBuilder.prototype.set(column, value)
+
+#### UpdateBuilder.prototype.setKey(column, key)
+
+#### UpdateBuilder.prototype.table(tableName, alias)
+
+### class DeleteBuilder extends QueryConditionsBuilder
+
+#### DeleteBuilder.prototype.constructor(params, options)
+
+#### DeleteBuilder.prototype.build()
+
+#### DeleteBuilder.prototype.from(tableName, alias)
+
+### class InsertBuilder extends [QueryBuilder][sql-querybuilder]
+
+#### InsertBuilder.prototype.constructor(params, options)
+
+#### InsertBuilder.prototype.build()
+
+#### InsertBuilder.prototype.table(tableName, alias)
+
+#### InsertBuilder.prototype.value(key, value)
+
+### class PgInsertBuilder extends [InsertBuilder][sql-insertbuilder]
+
+#### PgInsertBuilder.prototype.constructor(params, options)
+
+#### PgInsertBuilder.prototype.build()
+
+#### PgInsertBuilder.prototype.conflict(target, action)
+
+#### PgInsertBuilder.prototype.returning(key, alias)
 
 ### class ConditionsBuilder extends [QueryBuilder][sql-querybuilder]
 
@@ -215,6 +219,10 @@ Build and return the SQL query
 #### ConditionsBuilder.prototype.and(key, cond, value)
 
 #### ConditionsBuilder.prototype.andConds(conditions)
+
+#### ConditionsBuilder.prototype.andKey(leftKey, cond, rightKey)
+
+#### ConditionsBuilder.prototype.andRaw(sql)
 
 #### ConditionsBuilder.prototype.any(key, value)
 
@@ -232,7 +240,11 @@ Build and return the SQL query
 
 #### ConditionsBuilder.prototype.notIn(key, conds)
 
+#### ConditionsBuilder.prototype.notKey(leftKey, cond, rightKey)
+
 #### ConditionsBuilder.prototype.notNull(key)
+
+#### ConditionsBuilder.prototype.notRaw(sql)
 
 #### ConditionsBuilder.prototype.null(key)
 
@@ -248,15 +260,23 @@ Build and return the SQL query
 
 #### ConditionsBuilder.prototype.orIn(key, conds)
 
+#### ConditionsBuilder.prototype.orKey(leftKey, cond, rightKey)
+
 #### ConditionsBuilder.prototype.orNot(key, cond, value)
 
 #### ConditionsBuilder.prototype.orNotBetween(key, from, to, symmetric = false)
 
 #### ConditionsBuilder.prototype.orNotIn(key, conds)
 
+#### ConditionsBuilder.prototype.orNotKey(leftKey, cond, rightKey)
+
 #### ConditionsBuilder.prototype.orNotNull(key)
 
+#### ConditionsBuilder.prototype.orNotRaw(sql)
+
 #### ConditionsBuilder.prototype.orNull(key)
+
+#### ConditionsBuilder.prototype.orRaw(sql)
 
 ### class ParamsBuilder
 
@@ -302,8 +322,17 @@ Generic building method that must return the parameters object
 
 ### pg(handler)
 
+### pgQuerySelect(pg, handler)
+
+### pgQueryInsert(pg, handler)
+
+### pgQueryUpdate(pg, handler)
+
+### pgQueryDelete(pg, handler)
+
 [object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object
 [function]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function
 [string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type
 [paramsbuilder]: ../lib/params-builder.js
 [sql-querybuilder]: #class-querybuilder
+[sql-insertbuilder]: #class-insertbuilder-extends-querybuilder

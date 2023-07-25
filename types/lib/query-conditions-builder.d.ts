@@ -1,6 +1,7 @@
 import { ParamsBuilder } from './params-builder';
 import { SelectQueryValue } from './select-builder';
 import { QueryBuilder } from './query-builder';
+import { SqlTemplate } from './raw-builder';
 
 export interface QueryBuilderOptions {
   escapeIdentifier?: (key: string) => string;
@@ -15,6 +16,10 @@ export class QueryConditionsBuilder<
 
   where(key: string, cond: string, value: CV): this;
 
+  whereKey(leftKey: string, cond: string, rightKey: string): this;
+
+  whereRaw(sql: SqlTemplate): this;
+
   whereEq(key: string, value: CV): this;
 
   whereMore(key: string, value: CV): this;
@@ -27,9 +32,21 @@ export class QueryConditionsBuilder<
 
   orWhere(key: string, cond: string, value: CV): this;
 
+  orWhereKey(leftKey: string, cond: string, rightKey: string): this;
+
+  orWhereRaw(sql: SqlTemplate): this;
+
   whereNot(key: string, cond: string, value: CV): this;
 
+  whereNotKey(leftKey: string, cond: string, rightKey: string): this;
+
+  whereNotRaw(sql: SqlTemplate): this;
+
   orWhereNot(key: string, cond: string, value: CV): this;
+
+  orWhereNotKey(leftKey: string, cond: string, rightKey: string): this;
+
+  orWhereNotRaw(sql: SqlTemplate): this;
 
   whereNull(key: string): this;
 

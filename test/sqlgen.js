@@ -716,6 +716,66 @@ test.testSync('Select with inner join', (test, { builder, params }) => {
 });
 
 test.testSync(
+  'Select with inner join and where raw',
+  (test, { builder, params }) => {
+    builder
+      .from('table1')
+      .innerJoin('table2', 'table1.f', 'table2.f')
+      .where('table1.f', '=', 'abc')
+      .whereRaw('"table1"."d" = "table2"."d"')
+      .orWhereNotRaw('"table1"."e" = "table2"."e"');
+
+    test.strictSame(
+      builder.build(),
+      'SELECT * FROM "table1" ' +
+        'INNER JOIN "table2" ON "table1"."f" = "table2"."f" ' +
+        'WHERE "table1"."f" = $1 AND "table1"."d" = "table2"."d" OR NOT "table1"."e" = "table2"."e"'
+    );
+    test.strictSame(params.build(), ['abc']);
+  }
+);
+
+test.testSync(
+  'Select with inner join and where key',
+  (test, { builder, params }) => {
+    builder
+      .from('table1')
+      .innerJoin('table2', 'table1.f', 'table2.f')
+      .where('table1.f', '=', 'abc')
+      .whereKey('table1.d', '=', 'table2.d')
+      .orWhereNotKey('table1.e', '=', 'table2.e');
+
+    test.strictSame(
+      builder.build(),
+      'SELECT * FROM "table1" ' +
+        'INNER JOIN "table2" ON "table1"."f" = "table2"."f" ' +
+        'WHERE "table1"."f" = $1 AND "table1"."d" = "table2"."d" OR NOT "table1"."e" = "table2"."e"'
+    );
+    test.strictSame(params.build(), ['abc']);
+  }
+);
+
+test.testSync(
+  'Select with inner join and where not key',
+  (test, { builder, params }) => {
+    builder
+      .from('table1')
+      .innerJoin('table2', 'table1.f', 'table2.f')
+      .where('table1.f', '=', 'abc')
+      .whereNotKey('table1.d', '=', 'table2.d')
+      .whereNotKey('table1.e', '=', 'table2.e');
+
+    test.strictSame(
+      builder.build(),
+      'SELECT * FROM "table1" ' +
+        'INNER JOIN "table2" ON "table1"."f" = "table2"."f" ' +
+        'WHERE "table1"."f" = $1 AND NOT "table1"."d" = "table2"."d" AND NOT "table1"."e" = "table2"."e"'
+    );
+    test.strictSame(params.build(), ['abc']);
+  }
+);
+
+test.testSync(
   'Select with multiple inner joins',
   (test, { builder, params }) => {
     builder
@@ -1204,3 +1264,44 @@ test.testSync('Select allowed conditions or', (test, { builder }) => {
   // Must not throw.
   allowedConditions.forEach((cond) => builder.orWhere('f1', cond, 42));
 });
+
+test.testSync('Select condition where raw', (test, { builder, params }) => {
+  builder
+    .from('table2')
+    .select('A')
+    .whereRaw('"f1" = 52')
+    .orWhereRaw(`"f2" < '2023-07-25T17:21:25.333Z'::datetime`);
+
+  const expectedSql = `SELECT "A" FROM "table2" WHERE "f1" = 52 OR "f2" < '2023-07-25T17:21:25.333Z'::datetime`;
+  test.strictSame(builder.build(), expectedSql.replace(/\n\s+/g, ' '));
+  test.strictSame(params.build(), []);
+});
+
+test.testSync('Select condition where not raw', (test, { builder, params }) => {
+  builder
+    .from('table2')
+    .select('A')
+    .whereNotRaw('"f1" = 52')
+    .orWhereNotRaw(`"f2" < '2023-07-25T17:21:25.333Z'::datetime`);
+
+  const expectedSql = `SELECT "A" FROM "table2" WHERE NOT "f1" = 52 OR NOT "f2" < '2023-07-25T17:21:25.333Z'::datetime`;
+  test.strictSame(builder.build(), expectedSql.replace(/\n\s+/g, ' '));
+  test.strictSame(params.build(), []);
+});
+
+test.testSync(
+  'Select condition where raw function',
+  (test, { builder, params }) => {
+    const date = new Date().toISOString();
+
+    builder
+      .from('table2')
+      .select('A')
+      .whereRaw((params) => `"f1" = ${params.add(52)}`)
+      .orWhereRaw((params) => `"f2" < ${params.add(date)}::datetime`);
+
+    const expectedSql = `SELECT "A" FROM "table2" WHERE "f1" = $1 OR "f2" < $2::datetime`;
+    test.strictSame(builder.build(), expectedSql.replace(/\n\s+/g, ' '));
+    test.strictSame(params.build(), [52, date]);
+  }
+);

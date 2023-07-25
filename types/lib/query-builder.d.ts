@@ -14,4 +14,6 @@ export class QueryBuilder<O extends QueryBuilderOptions = QueryBuilderOptions> {
 
   // Build and return the SQL query.
   build(): string;
+
+  buildParams(): unknown[];
 }
