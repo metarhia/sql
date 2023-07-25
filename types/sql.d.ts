@@ -7,3 +7,7 @@ export {
 } from './lib/conditions-builder';
 export * from './lib/params-builder';
 export * from './lib/pg-params-builder';
+export * from './lib/insert-builder';
+export * from './lib/delete-builder';
+export * from './lib/update-builder';
+export * from './lib/pg-insert-builder';

@@ -1,6 +1,18 @@
 {
   "extends": ["metarhia", "plugin:prettier/recommended"],
+  "plugins": ["simple-import-sort", "import"],
   "rules": {
-    "class-methods-use-this": "off"
+    "class-methods-use-this": "off",
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-absolute-path": "error",
+    "import/no-amd": "error",
+    "import/no-default-export": "error",
+    "import/no-self-import": "error",
+    "import/no-named-default": "error",
+    "import/no-mutable-exports": "error",
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "import/no-duplicates": "error"
   }
 }

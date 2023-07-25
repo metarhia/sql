@@ -4,14 +4,19 @@ import { QueryConditionsBuilder } from './query-conditions-builder';
 
 export interface SelectBuilderOptions extends QueryBuilderOptions {}
 
-export type QueryValue = QueryBuilder | ((builder: SelectBuilder) => QueryBuilder);
+export type SelectQueryValue =
+  | QueryBuilder
+  | ((builder: SelectBuilder) => QueryBuilder);
 
-export type ConditionValue = any | QueryValue;
+export type SelectConditionValue = any | SelectQueryValue;
 
-export class SelectBuilder extends QueryConditionsBuilder<SelectBuilderOptions, ConditionValue> {
+export class SelectBuilder extends QueryConditionsBuilder<
+  SelectBuilderOptions,
+  SelectConditionValue
+> {
   constructor(params: ParamsBuilder, options?: SelectBuilderOptions);
 
-  from(tableName: string): this;
+  from(tableName: string, alias?: string): this;
 
   select(...fields: string[]): this;
 

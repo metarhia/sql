@@ -215,12 +215,12 @@ test.testSync('condition like or like', (test, { builder, params }) => {
 
 test.testSync('allowed conditions and', (test, { builder }) => {
   // Must not throw.
-  allowedConditions.forEach(cond => builder.and('f1', cond, 42));
+  allowedConditions.forEach((cond) => builder.and('f1', cond, 42));
 });
 
 test.testSync('allowed conditions or', (test, { builder }) => {
   // Must not throw.
-  allowedConditions.forEach(cond => builder.or('f1', cond, 42));
+  allowedConditions.forEach((cond) => builder.or('f1', cond, 42));
 });
 
 test.testSync('condition !=', (test, { builder, params }) => {
@@ -287,7 +287,7 @@ test.testSync('condition nested or', (test, { builder, params }) => {
 
 test.testSync('condition nested raw', (test, { builder, params }) => {
   const nested = new RawBuilder(
-    params => `SELECT "A" FROM "table2" WHERE "f1" = ${params.add(42)}`,
+    (params) => `SELECT "A" FROM "table2" WHERE "f1" = ${params.add(42)}`,
     params
   );
   builder.and('f1', '=', nested);
@@ -300,7 +300,7 @@ test.testSync('condition nested raw', (test, { builder, params }) => {
 
 test.testSync('condition nested raw or select', (test, { builder, params }) => {
   const nestedAnd = new RawBuilder(
-    params => `SELECT "A" FROM "table2" WHERE "f1" = ${params.add(42)}`,
+    (params) => `SELECT "A" FROM "table2" WHERE "f1" = ${params.add(42)}`,
     params
   );
   const nestedOr = new SelectBuilder(builder.params)
@@ -540,8 +540,8 @@ test.testSync(
     builder
       .and('f1', '=', 42)
       .null('f2')
-      .and(builder => builder.or('a1', '=', 13).or('a2', '>', 42))
-      .or(builder => builder.and('f3', '<', 97).between('f4', 100, 142));
+      .and((builder) => builder.or('a1', '=', 13).or('a2', '>', 42))
+      .or((builder) => builder.and('f3', '<', 97).between('f4', 100, 142));
     const expectedSql = `"f1" = $1 AND "f2" IS NULL
       AND ("a1" = $2 OR "a2" > $3)
       OR ("f3" < $4 AND "f4" BETWEEN $5 AND $6)`;
