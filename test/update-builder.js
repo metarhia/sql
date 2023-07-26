@@ -125,3 +125,19 @@ test.testSync(
     test.strictSame(params.build(), [42]);
   }
 );
+
+test.testSync(
+  'update multiple with nested builder',
+  (test, { builder, params }) => {
+    builder.table('Table').sets({
+      a: (b) => b.from('table2').select('a').where('id', '>', 42).limit(1),
+      b: false,
+    });
+
+    test.strictSame(
+      builder.build(),
+      'UPDATE "Table" SET "a" = (SELECT "a" FROM "table2" WHERE "id" > $1 LIMIT $2), "b" = $3'
+    );
+    test.strictSame(params.build(), [42, 1, false]);
+  }
+);

@@ -10,6 +10,7 @@
   - [SelectBuilder](#class-selectbuilder-extends-queryconditionsbuilder)
     - [SelectBuilder.prototype.constructor](#selectbuilderprototypeconstructorparams-options)
     - [SelectBuilder.prototype.\_addSelectClause](#selectbuilderprototype_addselectclausetype-field-alias)
+    - [SelectBuilder.prototype.\_processDistinct](#selectbuilderprototype_processdistinct)
     - [SelectBuilder.prototype.avg](#selectbuilderprototypeavgfield-alias)
     - [SelectBuilder.prototype.build](#selectbuilderprototypebuild)
     - [SelectBuilder.prototype.count](#selectbuilderprototypecountfield---alias)
@@ -34,6 +35,7 @@
     - [UpdateBuilder.prototype.from](#updatebuilderprototypefromtablename-alias)
     - [UpdateBuilder.prototype.set](#updatebuilderprototypesetcolumn-value)
     - [UpdateBuilder.prototype.setKey](#updatebuilderprototypesetkeycolumn-key)
+    - [UpdateBuilder.prototype.sets](#updatebuilderprototypesetsobj)
     - [UpdateBuilder.prototype.table](#updatebuilderprototypetabletablename-alias)
   - [DeleteBuilder](#class-deletebuilder-extends-queryconditionsbuilder)
     - [DeleteBuilder.prototype.constructor](#deletebuilderprototypeconstructorparams-options)
@@ -44,11 +46,16 @@
     - [InsertBuilder.prototype.build](#insertbuilderprototypebuild)
     - [InsertBuilder.prototype.table](#insertbuilderprototypetabletablename-alias)
     - [InsertBuilder.prototype.value](#insertbuilderprototypevaluekey-value)
+    - [InsertBuilder.prototype.values](#insertbuilderprototypevaluesobj)
   - [PgInsertBuilder](#class-pginsertbuilder-extends-insertbuilder)
     - [PgInsertBuilder.prototype.constructor](#pginsertbuilderprototypeconstructorparams-options)
     - [PgInsertBuilder.prototype.build](#pginsertbuilderprototypebuild)
     - [PgInsertBuilder.prototype.conflict](#pginsertbuilderprototypeconflicttarget-action)
     - [PgInsertBuilder.prototype.returning](#pginsertbuilderprototypereturningkey-alias)
+  - [PgSelectBuilder](#class-pgselectbuilder-extends-selectbuilder)
+    - [PgSelectBuilder.prototype.constructor](#pgselectbuilderprototypeconstructorparams-options)
+    - [PgSelectBuilder.prototype.\_processDistinct](#pgselectbuilderprototype_processdistinct)
+    - [PgSelectBuilder.prototype.distinctOn](#pgselectbuilderprototypedistinctonkeyorexpr)
   - [ConditionsBuilder](#class-conditionsbuilder-extends-querybuilder)
     - [ConditionsBuilder.prototype.constructor](#conditionsbuilderprototypeconstructorparams-options)
     - [ConditionsBuilder.prototype.and](#conditionsbuilderprototypeandkey-cond-value)
@@ -130,6 +137,8 @@ Build params for this query
 
 #### SelectBuilder.prototype.\_addSelectClause(type, field, alias)
 
+#### SelectBuilder.prototype.\_processDistinct()
+
 #### SelectBuilder.prototype.avg(field, alias)
 
 #### SelectBuilder.prototype.build()
@@ -182,6 +191,8 @@ Build params for this query
 
 #### UpdateBuilder.prototype.setKey(column, key)
 
+#### UpdateBuilder.prototype.sets(obj)
+
 #### UpdateBuilder.prototype.table(tableName, alias)
 
 ### class DeleteBuilder extends QueryConditionsBuilder
@@ -202,6 +213,8 @@ Build params for this query
 
 #### InsertBuilder.prototype.value(key, value)
 
+#### InsertBuilder.prototype.values(obj)
+
 ### class PgInsertBuilder extends [InsertBuilder][sql-insertbuilder]
 
 #### PgInsertBuilder.prototype.constructor(params, options)
@@ -211,6 +224,14 @@ Build params for this query
 #### PgInsertBuilder.prototype.conflict(target, action)
 
 #### PgInsertBuilder.prototype.returning(key, alias)
+
+### class PgSelectBuilder extends [SelectBuilder][sql-selectbuilder]
+
+#### PgSelectBuilder.prototype.constructor(params, options)
+
+#### PgSelectBuilder.prototype.\_processDistinct()
+
+#### PgSelectBuilder.prototype.distinctOn(keyOrExpr)
 
 ### class ConditionsBuilder extends [QueryBuilder][sql-querybuilder]
 
@@ -335,4 +356,5 @@ Generic building method that must return the parameters object
 [string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type
 [paramsbuilder]: ../lib/params-builder.js
 [sql-querybuilder]: #class-querybuilder
+[sql-selectbuilder]: #class-selectbuilder-extends-queryconditionsbuilder
 [sql-insertbuilder]: #class-insertbuilder-extends-querybuilder
