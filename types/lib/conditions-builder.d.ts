@@ -1,5 +1,6 @@
 import { ParamsBuilder } from './params-builder';
 import { QueryBuilder, QueryBuilderOptions } from './query-builder';
+import { SqlTemplate } from './raw-builder';
 
 export interface ConditionsBuilderOptions extends QueryBuilderOptions {}
 
@@ -14,13 +15,23 @@ export class ConditionsBuilder extends QueryBuilder<ConditionsBuilderOptions> {
   and(key: QueryValue): this;
   andConds(conds: QueryValue): this;
 
+  andKey(leftKey: string, cond: string, rightKey: string): this;
+  andRaw(sql: SqlTemplate): this;
+
   or(key: string, cond: string, value: ConditionValue): this;
   or(key: QueryValue): this;
   orConds(conds: QueryValue): this;
 
+  orKey(leftKey: string, cond: string, rightKey: string): this;
+  orRaw(sql: SqlTemplate): this;
+
   not(key: string, cond: string, value: ConditionValue): this;
+  notKey(leftKey: string, cond: string, rightKey: string): this;
+  notRaw(sql: SqlTemplate): this;
 
   orNot(key: string, cond: string, value: ConditionValue): this;
+  orNotKey(leftKey: string, cond: string, rightKey: string): this;
+  orNotRaw(sql: SqlTemplate): this;
 
   null(key: string): this;
 

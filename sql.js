@@ -1,25 +1,27 @@
 'use strict';
 
-const { QueryBuilder } = require('./lib/query-builder');
-const { SelectBuilder } = require('./lib/select-builder');
-const { RawBuilder } = require('./lib/raw-builder');
-const { ConditionsBuilder } = require('./lib/conditions-builder');
-const { ParamsBuilder } = require('./lib/params-builder');
-const { PostgresParamsBuilder } = require('./lib/pg-params-builder');
-
-const pg = handler => {
-  const params = new PostgresParamsBuilder();
-  const builder = new SelectBuilder(params);
-  if (handler) handler(builder, params);
-  return { builder, params };
-};
+const { QueryBuilder } = require('./lib/query-builder.js');
+const { SelectBuilder } = require('./lib/select-builder.js');
+const { UpdateBuilder } = require('./lib/update-builder.js');
+const { DeleteBuilder } = require('./lib/delete-builder.js');
+const { InsertBuilder } = require('./lib/insert-builder.js');
+const { PgInsertBuilder } = require('./lib/pg-insert-builder.js');
+const { RawBuilder } = require('./lib/raw-builder.js');
+const { ConditionsBuilder } = require('./lib/conditions-builder.js');
+const { ParamsBuilder } = require('./lib/params-builder.js');
+const { PostgresParamsBuilder } = require('./lib/pg-params-builder.js');
+const pg = require('./lib/pg.js');
 
 module.exports = {
   QueryBuilder,
   SelectBuilder,
   RawBuilder,
+  UpdateBuilder,
+  DeleteBuilder,
+  InsertBuilder,
+  PgInsertBuilder,
   ConditionsBuilder,
   ParamsBuilder,
   PostgresParamsBuilder,
-  pg,
+  ...pg,
 };

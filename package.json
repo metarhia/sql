@@ -10,8 +10,10 @@
   "scripts": {
     "lint": "eslint . && remark . && prettier --check \"**/*.js\" \"**/*.json\" \"**/*.md\" \"**/.*rc\" \"**/*.yml\" \"**/*.ts\"",
     "fmt": "prettier --write \"**/*.js\" \"**/*.json\" \"**/*.md\" \"**/.*rc\" \"**/*.yml\" \"**/*.ts\"",
+    "fix": "eslint --fix . && npm run -s fmt",
     "types": "tsc -p types/tsconfig.json",
-    "test": "npm run -s lint && npm run -s types && metatests test/",
+    "test": "npm run -s lint && npm run -s types && npm run -s test:only",
+    "test:only": "metatests test/",
     "doc": "metadoc -c .metadocrc && npm run fmt"
   },
   "repository": {
@@ -48,6 +50,6 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@metarhia/common": "^2.2.0"
+    "@metarhia/iterator": "^1.0.0-alpha3"
   }
 }

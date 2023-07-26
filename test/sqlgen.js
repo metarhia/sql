@@ -74,7 +74,7 @@ test.testSync('Select all single where', (test, { builder, params }) => {
 });
 
 test.testSync('Select where builder', (test, { builder, params }) => {
-  builder.from('table').where(b => b.and('f1', '=', 3).or('f2', '>', 42));
+  builder.from('table').where((b) => b.and('f1', '=', 3).or('f2', '>', 42));
   const query = builder.build();
   test.strictSame(
     query,
@@ -86,7 +86,7 @@ test.testSync('Select where builder', (test, { builder, params }) => {
 test.testSync('Select where value builder', (test, { builder, params }) => {
   builder
     .from('table')
-    .where('f1', '=', b =>
+    .where('f1', '=', (b) =>
       b
         .select('a')
         .from('table1')
@@ -109,7 +109,7 @@ test.testSync('Select all single orWhere', (test, { builder, params }) => {
 });
 
 test.testSync('Select all orWhere builder', (test, { builder, params }) => {
-  builder.from('table').orWhere(b => b.and('f1', '=', 3).or('f2', '>', 42));
+  builder.from('table').orWhere((b) => b.and('f1', '=', 3).or('f2', '>', 42));
   const query = builder.build();
   test.strictSame(
     query,
@@ -121,7 +121,7 @@ test.testSync('Select all orWhere builder', (test, { builder, params }) => {
 test.testSync('Select orWhere value builder', (test, { builder, params }) => {
   builder
     .from('table')
-    .orWhere('f1', '=', b =>
+    .orWhere('f1', '=', (b) =>
       b
         .select('a')
         .from('table1')
@@ -146,7 +146,7 @@ test.testSync('Select all single where not', (test, { builder, params }) => {
 test.testSync('Select whereNot value builder', (test, { builder, params }) => {
   builder
     .from('table')
-    .whereNot('f1', '=', b =>
+    .whereNot('f1', '=', (b) =>
       b
         .select('a')
         .from('table1')
@@ -173,7 +173,7 @@ test.testSync(
   (test, { builder, params }) => {
     builder
       .from('table')
-      .orWhereNot('f1', '=', b =>
+      .orWhereNot('f1', '=', (b) =>
         b
           .select('a')
           .from('table1')
@@ -395,7 +395,7 @@ test.testSync('Select where in numbers', (test, { builder, params }) => {
 test.testSync('Select whereIn value builder', (test, { builder, params }) => {
   builder
     .from('table')
-    .whereIn('f1', b =>
+    .whereIn('f1', (b) =>
       b.select('a').from('table1').where('f1', '=', 3).orWhere('f2', '>', 42)
     );
   const query = builder.build();
@@ -415,7 +415,7 @@ test.testSync('Select orWhere in numbers', (test, { builder, params }) => {
 test.testSync('Select orWhereIn value builder', (test, { builder, params }) => {
   builder
     .from('table')
-    .orWhereIn('f1', b =>
+    .orWhereIn('f1', (b) =>
       b.select('a').from('table1').where('f1', '=', 3).orWhere('f2', '>', 42)
     );
   const query = builder.build();
@@ -457,7 +457,7 @@ test.testSync(
   (test, { builder, params }) => {
     builder
       .from('table')
-      .whereNotIn('f1', b =>
+      .whereNotIn('f1', (b) =>
         b.select('a').from('table1').where('f1', '=', 3).orWhere('f2', '>', 42)
       );
     const query = builder.build();
@@ -483,7 +483,7 @@ test.testSync(
   (test, { builder, params }) => {
     builder
       .from('table')
-      .orWhereNotIn('f1', b =>
+      .orWhereNotIn('f1', (b) =>
         b.select('a').from('table1').where('f1', '=', 3).orWhere('f2', '>', 42)
       );
     const query = builder.build();
@@ -517,7 +517,7 @@ test.testSync('Select whereAny numbers', (test, { builder, params }) => {
 test.testSync('Select whereAny value builder', (test, { builder, params }) => {
   builder
     .from('table')
-    .whereAny('f1', b =>
+    .whereAny('f1', (b) =>
       b.select('a').from('table1').where('f1', '=', 3).orWhere('f2', '>', 42)
     );
   const query = builder.build();
@@ -539,7 +539,7 @@ test.testSync(
   (test, { builder, params }) => {
     builder
       .from('table')
-      .orWhereAny('f1', b =>
+      .orWhereAny('f1', (b) =>
         b.select('a').from('table1').where('f1', '=', 3).orWhere('f2', '>', 42)
       );
     const query = builder.build();
@@ -716,6 +716,66 @@ test.testSync('Select with inner join', (test, { builder, params }) => {
 });
 
 test.testSync(
+  'Select with inner join and where raw',
+  (test, { builder, params }) => {
+    builder
+      .from('table1')
+      .innerJoin('table2', 'table1.f', 'table2.f')
+      .where('table1.f', '=', 'abc')
+      .whereRaw('"table1"."d" = "table2"."d"')
+      .orWhereNotRaw('"table1"."e" = "table2"."e"');
+
+    test.strictSame(
+      builder.build(),
+      'SELECT * FROM "table1" ' +
+        'INNER JOIN "table2" ON "table1"."f" = "table2"."f" ' +
+        'WHERE "table1"."f" = $1 AND "table1"."d" = "table2"."d" OR NOT "table1"."e" = "table2"."e"'
+    );
+    test.strictSame(params.build(), ['abc']);
+  }
+);
+
+test.testSync(
+  'Select with inner join and where key',
+  (test, { builder, params }) => {
+    builder
+      .from('table1')
+      .innerJoin('table2', 'table1.f', 'table2.f')
+      .where('table1.f', '=', 'abc')
+      .whereKey('table1.d', '=', 'table2.d')
+      .orWhereNotKey('table1.e', '=', 'table2.e');
+
+    test.strictSame(
+      builder.build(),
+      'SELECT * FROM "table1" ' +
+        'INNER JOIN "table2" ON "table1"."f" = "table2"."f" ' +
+        'WHERE "table1"."f" = $1 AND "table1"."d" = "table2"."d" OR NOT "table1"."e" = "table2"."e"'
+    );
+    test.strictSame(params.build(), ['abc']);
+  }
+);
+
+test.testSync(
+  'Select with inner join and where not key',
+  (test, { builder, params }) => {
+    builder
+      .from('table1')
+      .innerJoin('table2', 'table1.f', 'table2.f')
+      .where('table1.f', '=', 'abc')
+      .whereNotKey('table1.d', '=', 'table2.d')
+      .whereNotKey('table1.e', '=', 'table2.e');
+
+    test.strictSame(
+      builder.build(),
+      'SELECT * FROM "table1" ' +
+        'INNER JOIN "table2" ON "table1"."f" = "table2"."f" ' +
+        'WHERE "table1"."f" = $1 AND NOT "table1"."d" = "table2"."d" AND NOT "table1"."e" = "table2"."e"'
+    );
+    test.strictSame(params.build(), ['abc']);
+  }
+);
+
+test.testSync(
   'Select with multiple inner joins',
   (test, { builder, params }) => {
     builder
@@ -751,7 +811,7 @@ test.testSync('Select where nested', (test, { builder, params }) => {
 
 test.testSync('Select where nested raw', (test, { builder, params }) => {
   const nested = new RawBuilder(
-    params => `SELECT "A" FROM "table2" WHERE "f1" = ${params.add(42)}`,
+    (params) => `SELECT "A" FROM "table2" WHERE "f1" = ${params.add(42)}`,
     params
   );
   builder.from('table1').where('f1', '=', nested);
@@ -777,7 +837,7 @@ test.testSync(
   (test, { builder, params }) => {
     builder
       .from('table')
-      .whereExists(b =>
+      .whereExists((b) =>
         b.select('a').from('table1').where('f1', '=', 3).orWhere('f2', '>', 42)
       );
     const query = builder.build();
@@ -802,7 +862,7 @@ test.testSync(
   (test, { builder, params }) => {
     builder
       .from('table')
-      .orWhereExists(b =>
+      .orWhereExists((b) =>
         b.select('a').from('table1').where('f1', '=', 3).orWhere('f2', '>', 42)
       );
     const query = builder.build();
@@ -890,8 +950,8 @@ test.testSync(
   (test, { builder, params }) => {
     builder.from('table').whereBetween(
       'a',
-      b => b.select('f1').from('table1').where('f1', '=', 3).limit(1),
-      b => b.select('f2').from('table2').where('f2', '>', 42).limit(1)
+      (b) => b.select('f1').from('table1').where('f1', '=', 3).limit(1),
+      (b) => b.select('f2').from('table2').where('f2', '>', 42).limit(1)
     );
     const query = builder.build();
     const expectedSql = `SELECT * FROM "table" WHERE
@@ -923,8 +983,8 @@ test.testSync(
   (test, { builder, params }) => {
     builder.from('table').orWhereBetween(
       'a',
-      b => b.select('f1').from('table1').where('f1', '=', 3).limit(1),
-      b => b.select('f2').from('table2').where('f2', '>', 42).limit(1)
+      (b) => b.select('f1').from('table1').where('f1', '=', 3).limit(1),
+      (b) => b.select('f2').from('table2').where('f2', '>', 42).limit(1)
     );
     const query = builder.build();
     const expectedSql = `SELECT * FROM "table" WHERE
@@ -952,8 +1012,8 @@ test.testSync(
   (test, { builder, params }) => {
     builder.from('table').orWhereNotBetween(
       'a',
-      b => b.select('f1').from('table1').where('f1', '=', 3).limit(1),
-      b => b.select('f2').from('table2').where('f2', '>', 42).limit(1)
+      (b) => b.select('f1').from('table1').where('f1', '=', 3).limit(1),
+      (b) => b.select('f2').from('table2').where('f2', '>', 42).limit(1)
     );
     const query = builder.build();
     const expectedSql = `SELECT * FROM "table" WHERE
@@ -969,8 +1029,8 @@ test.testSync(
   (test, { builder, params }) => {
     builder.from('table').whereNotBetween(
       'a',
-      b => b.select('f1').from('table1').where('f1', '=', 3).limit(1),
-      b => b.select('f2').from('table2').where('f2', '>', 42).limit(1)
+      (b) => b.select('f1').from('table1').where('f1', '=', 3).limit(1),
+      (b) => b.select('f2').from('table2').where('f2', '>', 42).limit(1)
     );
     const query = builder.build();
     const expectedSql = `SELECT * FROM "table" WHERE
@@ -1197,10 +1257,51 @@ test.testSync('Select from with alias', (test, { builder, params }) => {
 
 test.testSync('Select allowed conditions and', (test, { builder }) => {
   // Must not throw.
-  allowedConditions.forEach(cond => builder.where('f1', cond, 42));
+  allowedConditions.forEach((cond) => builder.where('f1', cond, 42));
 });
 
 test.testSync('Select allowed conditions or', (test, { builder }) => {
   // Must not throw.
-  allowedConditions.forEach(cond => builder.orWhere('f1', cond, 42));
+  allowedConditions.forEach((cond) => builder.orWhere('f1', cond, 42));
 });
+
+test.testSync('Select condition where raw', (test, { builder, params }) => {
+  builder
+    .from('table2')
+    .select('A')
+    .whereRaw('"f1" = 52')
+    .orWhereRaw(`"f2" < '2023-07-25T17:21:25.333Z'::datetime`);
+
+  const expectedSql = `SELECT "A" FROM "table2" WHERE "f1" = 52 OR "f2" < '2023-07-25T17:21:25.333Z'::datetime`;
+  test.strictSame(builder.build(), expectedSql.replace(/\n\s+/g, ' '));
+  test.strictSame(params.build(), []);
+});
+
+test.testSync('Select condition where not raw', (test, { builder, params }) => {
+  builder
+    .from('table2')
+    .select('A')
+    .whereNotRaw('"f1" = 52')
+    .orWhereNotRaw(`"f2" < '2023-07-25T17:21:25.333Z'::datetime`);
+
+  const expectedSql = `SELECT "A" FROM "table2" WHERE NOT "f1" = 52 OR NOT "f2" < '2023-07-25T17:21:25.333Z'::datetime`;
+  test.strictSame(builder.build(), expectedSql.replace(/\n\s+/g, ' '));
+  test.strictSame(params.build(), []);
+});
+
+test.testSync(
+  'Select condition where raw function',
+  (test, { builder, params }) => {
+    const date = new Date().toISOString();
+
+    builder
+      .from('table2')
+      .select('A')
+      .whereRaw((params) => `"f1" = ${params.add(52)}`)
+      .orWhereRaw((params) => `"f2" < ${params.add(date)}::datetime`);
+
+    const expectedSql = `SELECT "A" FROM "table2" WHERE "f1" = $1 OR "f2" < $2::datetime`;
+    test.strictSame(builder.build(), expectedSql.replace(/\n\s+/g, ' '));
+    test.strictSame(params.build(), [52, date]);
+  }
+);
