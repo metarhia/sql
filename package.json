@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Metarhia SQL utilities",
   "main": "sql.js",
+  "types": "types/sql.d.ts",
   "files": [
     "lib/",
     "types/"

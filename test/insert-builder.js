@@ -76,3 +76,19 @@ test.testSync('insert with nested builder', (test, { builder, params }) => {
   );
   test.strictSame(params.build(), [42, 1, false]);
 });
+
+test.testSync(
+  'insert multiple with nested builder',
+  (test, { builder, params }) => {
+    builder.table('Table').values({
+      a: (b) => b.from('table2').select('a').where('id', '>', 42).limit(1),
+      b: false,
+    });
+
+    test.strictSame(
+      builder.build(),
+      'INSERT INTO "Table" ("a", "b") VALUES ((SELECT "a" FROM "table2" WHERE "id" > $1 LIMIT $2), $3)'
+    );
+    test.strictSame(params.build(), [42, 1, false]);
+  }
+);

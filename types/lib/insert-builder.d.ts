@@ -1,6 +1,6 @@
 import { ParamsBuilder } from './params-builder';
 import { QueryBuilder, QueryBuilderOptions } from './query-builder';
-import { SelectBuilder, SelectConditionValue } from './select-builder';
+import { SelectConditionValue } from './select-builder';
 
 export interface InsertBuilderOptions extends QueryBuilderOptions {}
 
@@ -10,4 +10,6 @@ export class InsertBuilder extends QueryBuilder<InsertBuilderOptions> {
   table(tableName: string, alias?: string): this;
 
   value(key: string, value: SelectConditionValue): this;
+
+  values(obj: Record<string, SelectConditionValue>): this;
 }

@@ -6,6 +6,7 @@ const { UpdateBuilder } = require('./lib/update-builder.js');
 const { DeleteBuilder } = require('./lib/delete-builder.js');
 const { InsertBuilder } = require('./lib/insert-builder.js');
 const { PgInsertBuilder } = require('./lib/pg-insert-builder.js');
+const { PgSelectBuilder } = require('./lib/pg-select-builder.js');
 const { RawBuilder } = require('./lib/raw-builder.js');
 const { ConditionsBuilder } = require('./lib/conditions-builder.js');
 const { ParamsBuilder } = require('./lib/params-builder.js');
@@ -20,6 +21,7 @@ module.exports = {
   DeleteBuilder,
   InsertBuilder,
   PgInsertBuilder,
+  PgSelectBuilder,
   ConditionsBuilder,
   ParamsBuilder,
   PostgresParamsBuilder,
