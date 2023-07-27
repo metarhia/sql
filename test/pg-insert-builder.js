@@ -94,3 +94,21 @@ test.testSync(
     test.strictSame(params.build(), [42, 'aaa']);
   }
 );
+
+test.testSync(
+  'insert multiple items with returning all on conflict',
+  (test, { builder, params }) => {
+    builder
+      .table('Table')
+      .value('a', 42)
+      .value('b', 'aaa')
+      .conflict('("f1", "f2")', 'DO NOTHING')
+      .returning('*');
+
+    test.strictSame(
+      builder.build(),
+      'INSERT INTO "Table" ("a", "b") VALUES ($1, $2) ON CONFLICT ("f1", "f2") DO NOTHING RETURNING *'
+    );
+    test.strictSame(params.build(), [42, 'aaa']);
+  }
+);
