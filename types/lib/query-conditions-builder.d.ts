@@ -1,11 +1,7 @@
 import { ParamsBuilder } from './params-builder';
 import { SelectQueryValue } from './select-builder';
-import { QueryBuilder } from './query-builder';
+import { QueryBuilder, QueryBuilderOptions } from './query-builder';
 import { SqlTemplate } from './raw-builder';
-
-export interface QueryBuilderOptions {
-  escapeIdentifier?: (key: string) => string;
-}
 
 // Utility class for all proxy Conditions methods.
 export class QueryConditionsBuilder<
@@ -79,6 +75,16 @@ export class QueryConditionsBuilder<
   whereExists(subquery: SelectQueryValue): this;
 
   orWhereExists(subquery: SelectQueryValue): this;
+
+  whereLike(key: string, value: CV): this;
+  whereNotLike(key: string, value: CV): this;
+  orWhereLike(key: string, value: CV): this;
+  orWhereNotLike(key: string, value: CV): this;
+
+  whereILike(key: string, value: CV): this;
+  whereNotILike(key: string, value: CV): this;
+  orWhereILike(key: string, value: CV): this;
+  orWhereNotILike(key: string, value: CV): this;
 
   // Build and return the SQL query.
   build(): string;

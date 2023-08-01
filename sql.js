@@ -1,6 +1,7 @@
 'use strict';
 
 const { QueryBuilder } = require('./lib/query-builder.js');
+const { QueryConditionsBuilder } = require('./lib/query-conditions-builder.js');
 const { SelectBuilder } = require('./lib/select-builder.js');
 const { UpdateBuilder } = require('./lib/update-builder.js');
 const { DeleteBuilder } = require('./lib/delete-builder.js');
@@ -15,6 +16,7 @@ const pg = require('./lib/pg.js');
 
 module.exports = {
   QueryBuilder,
+  QueryConditionsBuilder,
   SelectBuilder,
   RawBuilder,
   UpdateBuilder,

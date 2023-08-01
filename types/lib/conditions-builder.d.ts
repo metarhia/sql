@@ -84,4 +84,14 @@ export class ConditionsBuilder extends QueryBuilder<ConditionsBuilderOptions> {
   exists(subquery: QueryBuilder): this;
 
   orExists(subquery: QueryBuilder): this;
+
+  like(key: string, value: ConditionValue): this;
+  notLike(key: string, value: ConditionValue): this;
+  orLike(key: string, value: ConditionValue): this;
+  orNotLike(key: string, value: ConditionValue): this;
+
+  ilike(key: string, value: ConditionValue): this;
+  notILike(key: string, value: ConditionValue): this;
+  orILike(key: string, value: ConditionValue): this;
+  orNotILike(key: string, value: ConditionValue): this;
 }
