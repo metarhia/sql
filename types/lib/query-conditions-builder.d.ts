@@ -1,11 +1,7 @@
 import { ParamsBuilder } from './params-builder';
 import { SelectQueryValue } from './select-builder';
-import { QueryBuilder } from './query-builder';
+import { QueryBuilder, QueryBuilderOptions } from './query-builder';
 import { SqlTemplate } from './raw-builder';
-
-export interface QueryBuilderOptions {
-  escapeIdentifier?: (key: string) => string;
-}
 
 // Utility class for all proxy Conditions methods.
 export class QueryConditionsBuilder<
