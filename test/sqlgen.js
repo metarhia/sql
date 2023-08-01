@@ -606,6 +606,110 @@ test.testSync('Select where like', (test, { builder, params }) => {
   test.strictSame(params.build(), ['abc']);
 });
 
+test.testSync('Select where not like', (test, { builder, params }) => {
+  builder.from('table').where('f1', 'not like', 'abc');
+  const query = builder.build();
+  test.strictSame(query, 'SELECT * FROM "table" WHERE "f1" NOT LIKE $1');
+  test.strictSame(params.build(), ['abc']);
+});
+
+test.testSync('Select where ilike', (test, { builder, params }) => {
+  builder.from('table').where('f1', 'ilike', 'abc');
+  const query = builder.build();
+  test.strictSame(query, 'SELECT * FROM "table" WHERE "f1" ILIKE $1');
+  test.strictSame(params.build(), ['abc']);
+});
+
+test.testSync('Select where not ilike', (test, { builder, params }) => {
+  builder.from('table').where('f1', 'not ilike', 'abc');
+  const query = builder.build();
+  test.strictSame(query, 'SELECT * FROM "table" WHERE "f1" NOT ILIKE $1');
+  test.strictSame(params.build(), ['abc']);
+});
+
+test.testSync('Select where shortcut like', (test, { builder, params }) => {
+  builder.from('table').whereLike('f1', 'abc');
+  const query = builder.build();
+  test.strictSame(query, 'SELECT * FROM "table" WHERE "f1" LIKE $1');
+  test.strictSame(params.build(), ['abc']);
+});
+
+test.testSync('Select where shortcut not like', (test, { builder, params }) => {
+  builder.from('table').whereNotLike('f1', 'abc');
+  const query = builder.build();
+  test.strictSame(query, 'SELECT * FROM "table" WHERE "f1" NOT LIKE $1');
+  test.strictSame(params.build(), ['abc']);
+});
+
+test.testSync(
+  'Select where shortcut like or not like',
+  (test, { builder, params }) => {
+    builder.from('table').whereLike('f1', 'abc').orWhereNotLike('f2', 'abc');
+    const query = builder.build();
+    test.strictSame(
+      query,
+      'SELECT * FROM "table" WHERE "f1" LIKE $1 OR "f2" NOT LIKE $2'
+    );
+    test.strictSame(params.build(), ['abc', 'abc']);
+  }
+);
+
+test.testSync(
+  'Select where shortcut not like or like',
+  (test, { builder, params }) => {
+    builder.from('table').whereNotLike('f1', 'abc').orWhereLike('f2', 'abc');
+    const query = builder.build();
+    test.strictSame(
+      query,
+      'SELECT * FROM "table" WHERE "f1" NOT LIKE $1 OR "f2" LIKE $2'
+    );
+    test.strictSame(params.build(), ['abc', 'abc']);
+  }
+);
+
+test.testSync('Select where shortcut ilike', (test, { builder, params }) => {
+  builder.from('table').whereILike('f1', 'abc');
+  const query = builder.build();
+  test.strictSame(query, 'SELECT * FROM "table" WHERE "f1" ILIKE $1');
+  test.strictSame(params.build(), ['abc']);
+});
+
+test.testSync(
+  'Select where shortcut not ilike',
+  (test, { builder, params }) => {
+    builder.from('table').whereNotILike('f1', 'abc');
+    const query = builder.build();
+    test.strictSame(query, 'SELECT * FROM "table" WHERE "f1" NOT ILIKE $1');
+    test.strictSame(params.build(), ['abc']);
+  }
+);
+
+test.testSync(
+  'Select where shortcut ilike or not ilike',
+  (test, { builder, params }) => {
+    builder.from('table').whereILike('f1', 'abc').orWhereNotILike('f2', 'abc');
+    const query = builder.build();
+    test.strictSame(
+      query,
+      'SELECT * FROM "table" WHERE "f1" ILIKE $1 OR "f2" NOT ILIKE $2'
+    );
+    test.strictSame(params.build(), ['abc', 'abc']);
+  }
+);
+
+test.testSync(
+  'Select where shortcut not ilike or ilike',
+  (test, { builder, params }) => {
+    builder.from('table').whereNotILike('f1', 'abc').orWhereILike('f2', 'abc');
+    const query = builder.build();
+    test.strictSame(
+      query,
+      'SELECT * FROM "table" WHERE "f1" NOT ILIKE $1 OR "f2" ILIKE $2'
+    );
+    test.strictSame(params.build(), ['abc', 'abc']);
+  }
+);
+
 test.testSync('Select where <>', (test, { builder, params }) => {
   builder.from('table').where('f1', '<>', 'abc');
   const query = builder.build();

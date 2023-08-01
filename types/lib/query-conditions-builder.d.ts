@@ -80,6 +80,16 @@ export class QueryConditionsBuilder<
 
   orWhereExists(subquery: SelectQueryValue): this;
 
+  whereLike(key: string, value: CV): this;
+  whereNotLike(key: string, value: CV): this;
+  orWhereLike(key: string, value: CV): this;
+  orWhereNotLike(key: string, value: CV): this;
+
+  whereILike(key: string, value: CV): this;
+  whereNotILike(key: string, value: CV): this;
+  orWhereILike(key: string, value: CV): this;
+  orWhereNotILike(key: string, value: CV): this;
+
   // Build and return the SQL query.
   build(): string;
 }

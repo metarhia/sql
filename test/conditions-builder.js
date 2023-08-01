@@ -201,6 +201,51 @@ test.testSync('condition like', (test, { builder, params }) => {
   test.strictSame(params.build(), ['abc']);
 });
 
+test.testSync('condition ilike', (test, { builder, params }) => {
+  builder.and('f1', 'ilike', 'abc');
+  test.strictSame(builder.build(), '"f1" ILIKE $1');
+  test.strictSame(params.build(), ['abc']);
+});
+
+test.testSync('condition shortcut like', (test, { builder, params }) => {
+  builder.like('f1', 'abc');
+  test.strictSame(builder.build(), '"f1" LIKE $1');
+  test.strictSame(params.build(), ['abc']);
+});
+
+test.testSync('condition shortcut not like', (test, { builder, params }) => {
+  builder.notLike('f1', 'abc');
+  test.strictSame(builder.build(), '"f1" NOT LIKE $1');
+  test.strictSame(params.build(), ['abc']);
+});
+
+test.testSync('condition shortcut or not like', (test, { builder, params }) => {
+  builder.orLike('f1', 'abc').orNotLike('f2', 'abc');
+  test.strictSame(builder.build(), '"f1" LIKE $1 OR "f2" NOT LIKE $2');
+  test.strictSame(params.build(), ['abc', 'abc']);
+});
+
+test.testSync('condition shortcut ilike', (test, { builder, params }) => {
+  builder.ilike('f1', 'abc');
+  test.strictSame(builder.build(), '"f1" ILIKE $1');
+  test.strictSame(params.build(), ['abc']);
+});
+
+test.testSync('condition shortcut not ilike', (test, { builder, params }) => {
+  builder.notILike('f1', 'abc');
+  test.strictSame(builder.build(), '"f1" NOT ILIKE $1');
+  test.strictSame(params.build(), ['abc']);
+});
+
+test.testSync(
+  'condition shortcut or not ilike',
+  (test, { builder, params }) => {
+    builder.orILike('f1', 'abc').orNotILike('f2', 'abc');
+    test.strictSame(builder.build(), '"f1" ILIKE $1 OR "f2" NOT ILIKE $2');
+    test.strictSame(params.build(), ['abc', 'abc']);
+  }
+);
+
 test.testSync('condition or like', (test, { builder, params }) => {
   builder.or('f1', 'like', 'abc');
   test.strictSame(builder.build(), '"f1" LIKE $1');
