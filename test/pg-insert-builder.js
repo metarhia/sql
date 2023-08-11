@@ -16,6 +16,16 @@ test.beforeEach(async () => {
   return { builder: new PgInsertBuilder(params), params };
 });
 
+test.testSync('insert multiple items', (test, { builder, params }) => {
+  builder.table('Table').value('a', 42).value('b', 'aaa');
+
+  test.strictSame(
+    builder.build(),
+    'INSERT INTO "Table" ("a", "b") VALUES ($1, $2)'
+  );
+  test.strictSame(params.build(), [42, 'aaa']);
+});
+
 test.testSync(
   'insert multiple items with returning all',
   (test, { builder, params }) => {
