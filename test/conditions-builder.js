@@ -2,7 +2,7 @@
 
 const { SelectBuilder } = require('../lib/select-builder');
 const { testSync } = require('metatests');
-const { RawBuilder } = require('../lib/raw-builder');
+const { RawBuilder } = require('../lib/query-builder.js');
 const { ConditionsBuilder } = require('../lib/conditions-builder');
 const { PostgresParamsBuilder } = require('../lib/pg-params-builder');
 

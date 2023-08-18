@@ -2,7 +2,7 @@
 
 const { testSync } = require('metatests');
 const { SelectBuilder } = require('../lib/select-builder');
-const { RawBuilder } = require('../lib/raw-builder');
+const { RawBuilder } = require('../lib/query-builder.js');
 const { PostgresParamsBuilder } = require('../lib/pg-params-builder');
 
 const allowedConditions = new Set([
@@ -572,6 +572,62 @@ test.testSync('Select multiple operations', (test, { builder, params }) => {
   test.strictSame(query, 'SELECT avg("f1"), sum("f2") FROM "table"');
   test.strictSame(params.build(), []);
 });
+
+test.testSync('Select fn operation', (test, { builder, params }) => {
+  builder.from('table').selectFn('my_function', 'f1').whereEq('f2', 42);
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'SELECT my_function("f1") FROM "table" WHERE "f2" = $1'
+  );
+  test.strictSame(params.build(), [42]);
+});
+
+test.testSync('Select fn operation', (test, { builder, params }) => {
+  builder.from('table').selectFn('array_agg', 'f1').whereEq('f2', 42);
+  const query = builder.build();
+  test.strictSame(query, 'SELECT array_agg("f1") FROM "table" WHERE "f2" = $1');
+  test.strictSame(params.build(), [42]);
+});
+
+test.testSync('Select custom operation', (test, { builder, params }) => {
+  builder.from('table').selectRaw('array_agg("f1")').whereEq('f2', 42);
+  const query = builder.build();
+  test.strictSame(query, 'SELECT array_agg("f1") FROM "table" WHERE "f2" = $1');
+  test.strictSame(params.build(), [42]);
+});
+
+test.testSync(
+  'Select custom operation with QueryBuilder',
+  (test, { builder, params }) => {
+    builder
+      .from('table')
+      .selectRaw(new RawBuilder('array_agg("f1")'))
+      .whereEq('f2', 42);
+    const query = builder.build();
+    test.strictSame(
+      query,
+      'SELECT array_agg("f1") FROM "table" WHERE "f2" = $1'
+    );
+    test.strictSame(params.build(), [42]);
+  }
+);
+
+test.testSync(
+  'Select custom operation with QueryBuilder',
+  (test, { builder, params }) => {
+    builder
+      .from('table')
+      .selectRaw(builder.raw('array_agg("f1")'))
+      .whereEq('f2', 42);
+    const query = builder.build();
+    test.strictSame(
+      query,
+      'SELECT array_agg("f1") FROM "table" WHERE "f2" = $1'
+    );
+    test.strictSame(params.build(), [42]);
+  }
+);
 
 test.testSync(
   'Select multiple operations order',

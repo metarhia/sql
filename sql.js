@@ -1,6 +1,6 @@
 'use strict';
 
-const { QueryBuilder } = require('./lib/query-builder.js');
+const { QueryBuilder, RawBuilder } = require('./lib/query-builder.js');
 const { QueryConditionsBuilder } = require('./lib/query-conditions-builder.js');
 const { SelectBuilder } = require('./lib/select-builder.js');
 const { UpdateBuilder } = require('./lib/update-builder.js');
@@ -8,7 +8,6 @@ const { DeleteBuilder } = require('./lib/delete-builder.js');
 const { InsertBuilder } = require('./lib/insert-builder.js');
 const { PgInsertBuilder } = require('./lib/pg-insert-builder.js');
 const { PgSelectBuilder } = require('./lib/pg-select-builder.js');
-const { RawBuilder } = require('./lib/raw-builder.js');
 const { ConditionsBuilder } = require('./lib/conditions-builder.js');
 const { ParamsBuilder } = require('./lib/params-builder.js');
 const { PostgresParamsBuilder } = require('./lib/pg-params-builder.js');

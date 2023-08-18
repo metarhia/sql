@@ -1,6 +1,9 @@
 import { ParamsBuilder } from './params-builder';
-import { QueryBuilder, QueryBuilderOptions } from './query-builder';
-import { SqlTemplate } from './raw-builder';
+import {
+  QueryBuilder,
+  QueryBuilderOptions,
+  SqlTemplate,
+} from './query-builder';
 
 export interface ConditionsBuilderOptions extends QueryBuilderOptions {}
 
