@@ -70,6 +70,7 @@
     - [SelectBuilder.prototype.orderBy](#selectbuilderprototypeorderbyfield-dir--asc)
     - [SelectBuilder.prototype.select](#selectbuilderprototypeselectfields)
     - [SelectBuilder.prototype.selectAs](#selectbuilderprototypeselectasfield-alias)
+    - [SelectBuilder.prototype.selectFn](#selectbuilderprototypeselectfnfn-field-alias)
     - [SelectBuilder.prototype.selectRaw](#selectbuilderprototypeselectrawsqlorbuilder)
     - [SelectBuilder.prototype.sum](#selectbuilderprototypesumfield-alias)
   - [RawBuilder](#class-rawbuilder-extends-querybuilder)
@@ -314,6 +315,8 @@ Build params for this query
 #### SelectBuilder.prototype.select(...fields)
 
 #### SelectBuilder.prototype.selectAs(field, alias)
+
+#### SelectBuilder.prototype.selectFn(fn, field, alias)
 
 #### SelectBuilder.prototype.selectRaw(sqlOrBuilder)
 

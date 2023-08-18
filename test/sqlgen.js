@@ -573,6 +573,23 @@ test.testSync('Select multiple operations', (test, { builder, params }) => {
   test.strictSame(params.build(), []);
 });
 
+test.testSync('Select fn operation', (test, { builder, params }) => {
+  builder.from('table').selectFn('my_function', 'f1').whereEq('f2', 42);
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'SELECT my_function("f1") FROM "table" WHERE "f2" = $1'
+  );
+  test.strictSame(params.build(), [42]);
+});
+
+test.testSync('Select fn operation', (test, { builder, params }) => {
+  builder.from('table').selectFn('array_agg', 'f1').whereEq('f2', 42);
+  const query = builder.build();
+  test.strictSame(query, 'SELECT array_agg("f1") FROM "table" WHERE "f2" = $1');
+  test.strictSame(params.build(), [42]);
+});
+
 test.testSync('Select custom operation', (test, { builder, params }) => {
   builder.from('table').selectRaw('array_agg("f1")').whereEq('f2', 42);
   const query = builder.build();
