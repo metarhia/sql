@@ -7,6 +7,7 @@
     - [QueryBuilder.prototype.buildParams](#querybuilderprototypebuildparams)
     - [QueryBuilder.prototype.makeKeyOrExpr](#querybuilderprototypemakekeyorexprvalue-wrap--false)
     - [QueryBuilder.prototype.makeParamValue](#querybuilderprototypemakeparamvaluevalue)
+    - [QueryBuilder.prototype.raw](#querybuilderprototyperawsqltemplate)
   - [QueryConditionsBuilder](#class-queryconditionsbuilder-extends-querybuilder)
     - [QueryConditionsBuilder.prototype.constructor](#queryconditionsbuilderprototypeconstructorparams-options)
     - [QueryConditionsBuilder.prototype.\_whereValueMapper](#queryconditionsbuilderprototype_wherevaluemappervalue)
@@ -69,6 +70,7 @@
     - [SelectBuilder.prototype.orderBy](#selectbuilderprototypeorderbyfield-dir--asc)
     - [SelectBuilder.prototype.select](#selectbuilderprototypeselectfields)
     - [SelectBuilder.prototype.selectAs](#selectbuilderprototypeselectasfield-alias)
+    - [SelectBuilder.prototype.selectRaw](#selectbuilderprototypeselectrawsqlorbuilder)
     - [SelectBuilder.prototype.sum](#selectbuilderprototypesumfield-alias)
   - [RawBuilder](#class-rawbuilder-extends-querybuilder)
     - [RawBuilder.prototype.constructor](#rawbuilderprototypeconstructorsqltemplate)
@@ -186,6 +188,8 @@ Build params for this query
 #### QueryBuilder.prototype.makeKeyOrExpr(value, wrap = false)
 
 #### QueryBuilder.prototype.makeParamValue(value)
+
+#### QueryBuilder.prototype.raw(sqlTemplate)
 
 ### class QueryConditionsBuilder extends [QueryBuilder][sql-querybuilder]
 
@@ -310,6 +314,8 @@ Build params for this query
 #### SelectBuilder.prototype.select(...fields)
 
 #### SelectBuilder.prototype.selectAs(field, alias)
+
+#### SelectBuilder.prototype.selectRaw(sqlOrBuilder)
 
 #### SelectBuilder.prototype.sum(field, alias)
 

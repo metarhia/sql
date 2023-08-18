@@ -12,8 +12,19 @@ export class QueryBuilder<O extends QueryBuilderOptions = QueryBuilderOptions> {
 
   makeKeyOrExpr(value: string | QueryBuilder): string;
 
+  raw(sqlTemplate: SqlTemplate): RawBuilder;
   // Build and return the SQL query.
   build(): string;
 
   buildParams(): unknown[];
+}
+
+export type SqlTemplate = string | ((p: ParamsBuilder) => string);
+
+export class RawBuilder extends QueryBuilder {
+  constructor(
+    sqlTemplate: SqlTemplate,
+    params: ParamsBuilder,
+    options?: QueryBuilderOptions
+  );
 }
