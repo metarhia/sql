@@ -24,6 +24,8 @@ export class SelectBuilder extends QueryConditionsBuilder<
 
   selectFn(fn: string, field: string, alias: string): this;
 
+  selectRaw(sql: QueryBuilder | string): this;
+
   innerJoin(tableName: string, leftKey: string, rightKey: string): this;
 
   distinct(): this;

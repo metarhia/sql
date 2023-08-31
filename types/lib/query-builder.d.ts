@@ -13,6 +13,7 @@ export class QueryBuilder<O extends QueryBuilderOptions = QueryBuilderOptions> {
   makeKeyOrExpr(value: string | QueryBuilder): string;
 
   raw(sqlTemplate: SqlTemplate): RawBuilder;
+
   // Build and return the SQL query.
   build(): string;
 
