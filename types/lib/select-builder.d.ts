@@ -43,9 +43,13 @@ export class SelectBuilder extends QueryConditionsBuilder<
     rightKey: string
   ): this;
 
-  innerJoinCond(tableName: string, condition: string): this;
+  innerJoinCond(tableName: string, condition: QueryBuilder | string): this;
 
-  innerJoinCondAs(tableName: string, alias: string, condition: string): this;
+  innerJoinCondAs(
+    tableName: string,
+    alias: string,
+    condition: QueryBuilder | string
+  ): this;
 
   leftJoin(tableName: string, leftKey: string, rightKey: string): this;
 
@@ -56,9 +60,13 @@ export class SelectBuilder extends QueryConditionsBuilder<
     rightKey: string
   ): this;
 
-  leftJoinCond(tableName: string, condition: string): this;
+  leftJoinCond(tableName: string, condition: QueryBuilder | string): this;
 
-  leftJoinCondAs(tableName: string, alias: string, condition: string): this;
+  leftJoinCondAs(
+    tableName: string,
+    alias: string,
+    condition: QueryBuilder | string
+  ): this;
 
   rightJoin(tableName: string, leftKey: string, rightKey: string): this;
 
@@ -69,9 +77,13 @@ export class SelectBuilder extends QueryConditionsBuilder<
     rightKey: string
   ): this;
 
-  rightJoinCond(tableName: string, condition: string): this;
+  rightJoinCond(tableName: string, condition: QueryBuilder | string): this;
 
-  rightJoinCondAs(tableName: string, alias: string, condition: string): this;
+  rightJoinCondAs(
+    tableName: string,
+    alias: string,
+    condition: QueryBuilder | string
+  ): this;
 
   fullJoin(tableName: string, leftKey: string, rightKey: string): this;
 
@@ -82,9 +94,13 @@ export class SelectBuilder extends QueryConditionsBuilder<
     rightKey: string
   ): this;
 
-  fullJoinCond(tableName: string, condition: string): this;
+  fullJoinCond(tableName: string, condition: QueryBuilder | string): this;
 
-  fullJoinCondAs(tableName: string, alias: string, condition: string): this;
+  fullJoinCondAs(
+    tableName: string,
+    alias: string,
+    condition: QueryBuilder | string
+  ): this;
 
   naturalJoin(tableName: string): this;
 
@@ -106,7 +122,7 @@ export class SelectBuilder extends QueryConditionsBuilder<
     kind: JoinKind,
     tableName: string,
     alias: string,
-    condition: string
+    condition: QueryBuilder | string
   ): this;
 
   distinct(): this;
