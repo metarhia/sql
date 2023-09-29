@@ -21,13 +21,23 @@ export class QueryConditionsBuilder<
 
   whereEq(key: string, value: CV): this;
 
+  orWhereEq(key: string, value: CV): this;
+
   whereMore(key: string, value: CV): this;
+
+  orWhereMore(key: string, value: CV): this;
 
   whereMoreEq(key: string, value: CV): this;
 
+  orWhereMoreEq(key: string, value: CV): this;
+
   whereLess(key: string, value: CV): this;
 
+  orWhereMoreEq(key: string, value: CV): this;
+
   whereLessEq(key: string, value: CV): this;
+
+  orWhereLessEq(key: string, value: CV): this;
 
   orWhere(key: string, cond: string, value: CV): this;
 

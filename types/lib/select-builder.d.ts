@@ -10,6 +10,14 @@ export type SelectQueryValue =
 
 export type SelectConditionValue = any | SelectQueryValue;
 
+export type JoinKind =
+  | 'INNER'
+  | 'LEFT OUTER'
+  | 'RIGHT OUTER'
+  | 'FULL OUTER'
+  | 'NATURAL'
+  | 'CROSS';
+
 export class SelectBuilder extends QueryConditionsBuilder<
   SelectBuilderOptions,
   SelectConditionValue
@@ -27,6 +35,95 @@ export class SelectBuilder extends QueryConditionsBuilder<
   selectRaw(sql: QueryBuilder | string): this;
 
   innerJoin(tableName: string, leftKey: string, rightKey: string): this;
+
+  innerJoinAs(
+    tableName: string,
+    alias: string,
+    leftKey: string,
+    rightKey: string
+  ): this;
+
+  innerJoinCond(tableName: string, condition: QueryBuilder | string): this;
+
+  innerJoinCondAs(
+    tableName: string,
+    alias: string,
+    condition: QueryBuilder | string
+  ): this;
+
+  leftJoin(tableName: string, leftKey: string, rightKey: string): this;
+
+  leftJoinAs(
+    tableName: string,
+    alias: string,
+    leftKey: string,
+    rightKey: string
+  ): this;
+
+  leftJoinCond(tableName: string, condition: QueryBuilder | string): this;
+
+  leftJoinCondAs(
+    tableName: string,
+    alias: string,
+    condition: QueryBuilder | string
+  ): this;
+
+  rightJoin(tableName: string, leftKey: string, rightKey: string): this;
+
+  rightJoinAs(
+    tableName: string,
+    alias: string,
+    leftKey: string,
+    rightKey: string
+  ): this;
+
+  rightJoinCond(tableName: string, condition: QueryBuilder | string): this;
+
+  rightJoinCondAs(
+    tableName: string,
+    alias: string,
+    condition: QueryBuilder | string
+  ): this;
+
+  fullJoin(tableName: string, leftKey: string, rightKey: string): this;
+
+  fullJoinAs(
+    tableName: string,
+    alias: string,
+    leftKey: string,
+    rightKey: string
+  ): this;
+
+  fullJoinCond(tableName: string, condition: QueryBuilder | string): this;
+
+  fullJoinCondAs(
+    tableName: string,
+    alias: string,
+    condition: QueryBuilder | string
+  ): this;
+
+  naturalJoin(tableName: string): this;
+
+  naturalJoinAs(tableName: string, alias: string): this;
+
+  crossJoin(tableName: string): this;
+
+  crossJoinAs(tableName: string, alias: string): this;
+
+  join(
+    kind: JoinKind,
+    tableName: string,
+    alias: string,
+    leftKey: string,
+    rightKey: string
+  ): this;
+
+  joinCond(
+    kind: JoinKind,
+    tableName: string,
+    alias: string,
+    condition: QueryBuilder | string
+  ): this;
 
   distinct(): this;
 

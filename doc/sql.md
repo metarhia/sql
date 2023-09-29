@@ -14,11 +14,16 @@
     - [QueryConditionsBuilder.prototype.orWhere](#queryconditionsbuilderprototypeorwherekey-cond-value)
     - [QueryConditionsBuilder.prototype.orWhereAny](#queryconditionsbuilderprototypeorwhereanykey-value)
     - [QueryConditionsBuilder.prototype.orWhereBetween](#queryconditionsbuilderprototypeorwherebetweenkey-from-to-symmetric)
+    - [QueryConditionsBuilder.prototype.orWhereEq](#queryconditionsbuilderprototypeorwhereeqkey-value)
     - [QueryConditionsBuilder.prototype.orWhereExists](#queryconditionsbuilderprototypeorwhereexistssubquery)
     - [QueryConditionsBuilder.prototype.orWhereILike](#queryconditionsbuilderprototypeorwhereilikekey-value)
     - [QueryConditionsBuilder.prototype.orWhereIn](#queryconditionsbuilderprototypeorwhereinkey-conds)
     - [QueryConditionsBuilder.prototype.orWhereKey](#queryconditionsbuilderprototypeorwherekeyleftkey-cond-rightkey)
+    - [QueryConditionsBuilder.prototype.orWhereLess](#queryconditionsbuilderprototypeorwherelesskey-value)
+    - [QueryConditionsBuilder.prototype.orWhereLessEq](#queryconditionsbuilderprototypeorwherelesseqkey-value)
     - [QueryConditionsBuilder.prototype.orWhereLike](#queryconditionsbuilderprototypeorwherelikekey-value)
+    - [QueryConditionsBuilder.prototype.orWhereMore](#queryconditionsbuilderprototypeorwheremorekey-value)
+    - [QueryConditionsBuilder.prototype.orWhereMoreEq](#queryconditionsbuilderprototypeorwheremoreeqkey-value)
     - [QueryConditionsBuilder.prototype.orWhereNot](#queryconditionsbuilderprototypeorwherenotkey-cond-value)
     - [QueryConditionsBuilder.prototype.orWhereNotBetween](#queryconditionsbuilderprototypeorwherenotbetweenkey-from-to-symmetric)
     - [QueryConditionsBuilder.prototype.orWhereNotILike](#queryconditionsbuilderprototypeorwherenotilikekey-value)
@@ -59,15 +64,36 @@
     - [SelectBuilder.prototype.avg](#selectbuilderprototypeavgfield-alias)
     - [SelectBuilder.prototype.build](#selectbuilderprototypebuild)
     - [SelectBuilder.prototype.count](#selectbuilderprototypecountfield---alias)
+    - [SelectBuilder.prototype.crossJoin](#selectbuilderprototypecrossjointablename)
+    - [SelectBuilder.prototype.crossJoinAs](#selectbuilderprototypecrossjoinastablename-alias)
     - [SelectBuilder.prototype.distinct](#selectbuilderprototypedistinct)
     - [SelectBuilder.prototype.from](#selectbuilderprototypefromtablename-alias)
+    - [SelectBuilder.prototype.fullJoin](#selectbuilderprototypefulljointablename-leftkey-rightkey)
+    - [SelectBuilder.prototype.fullJoinAs](#selectbuilderprototypefulljoinastablename-alias-leftkey-rightkey)
+    - [SelectBuilder.prototype.fullJoinCond](#selectbuilderprototypefulljoincondtablename-condition)
+    - [SelectBuilder.prototype.fullJoinCondAs](#selectbuilderprototypefulljoincondastablename-alias-condition)
     - [SelectBuilder.prototype.groupBy](#selectbuilderprototypegroupbyfields)
     - [SelectBuilder.prototype.innerJoin](#selectbuilderprototypeinnerjointablename-leftkey-rightkey)
+    - [SelectBuilder.prototype.innerJoinAs](#selectbuilderprototypeinnerjoinastablename-alias-leftkey-rightkey)
+    - [SelectBuilder.prototype.innerJoinCond](#selectbuilderprototypeinnerjoincondtablename-condition)
+    - [SelectBuilder.prototype.innerJoinCondAs](#selectbuilderprototypeinnerjoincondastablename-alias-condition)
+    - [SelectBuilder.prototype.join](#selectbuilderprototypejoinkind-tablename-alias-leftkey-rightkey)
+    - [SelectBuilder.prototype.joinCond](#selectbuilderprototypejoincondkind-tablename-alias-condition)
+    - [SelectBuilder.prototype.leftJoin](#selectbuilderprototypeleftjointablename-leftkey-rightkey)
+    - [SelectBuilder.prototype.leftJoinAs](#selectbuilderprototypeleftjoinastablename-alias-leftkey-rightkey)
+    - [SelectBuilder.prototype.leftJoinCond](#selectbuilderprototypeleftjoincondtablename-condition)
+    - [SelectBuilder.prototype.leftJoinCondAs](#selectbuilderprototypeleftjoincondastablename-alias-condition)
     - [SelectBuilder.prototype.limit](#selectbuilderprototypelimitlimit)
     - [SelectBuilder.prototype.max](#selectbuilderprototypemaxfield-alias)
     - [SelectBuilder.prototype.min](#selectbuilderprototypeminfield-alias)
+    - [SelectBuilder.prototype.naturalJoin](#selectbuilderprototypenaturaljointablename)
+    - [SelectBuilder.prototype.naturalJoinAs](#selectbuilderprototypenaturaljoinastablename-alias)
     - [SelectBuilder.prototype.offset](#selectbuilderprototypeoffsetoffset)
     - [SelectBuilder.prototype.orderBy](#selectbuilderprototypeorderbyfield-dir--asc)
+    - [SelectBuilder.prototype.rightJoin](#selectbuilderprototyperightjointablename-leftkey-rightkey)
+    - [SelectBuilder.prototype.rightJoinAs](#selectbuilderprototyperightjoinastablename-alias-leftkey-rightkey)
+    - [SelectBuilder.prototype.rightJoinCond](#selectbuilderprototyperightjoincondtablename-condition)
+    - [SelectBuilder.prototype.rightJoinCondAs](#selectbuilderprototyperightjoincondastablename-alias-condition)
     - [SelectBuilder.prototype.select](#selectbuilderprototypeselectfields)
     - [SelectBuilder.prototype.selectAs](#selectbuilderprototypeselectasfield-alias)
     - [SelectBuilder.prototype.selectFn](#selectbuilderprototypeselectfnfn-field-alias)
@@ -204,6 +230,8 @@ Build params for this query
 
 #### QueryConditionsBuilder.prototype.orWhereBetween(key, from, to, symmetric)
 
+#### QueryConditionsBuilder.prototype.orWhereEq(key, value)
+
 #### QueryConditionsBuilder.prototype.orWhereExists(subquery)
 
 #### QueryConditionsBuilder.prototype.orWhereILike(key, value)
@@ -212,7 +240,15 @@ Build params for this query
 
 #### QueryConditionsBuilder.prototype.orWhereKey(leftKey, cond, rightKey)
 
+#### QueryConditionsBuilder.prototype.orWhereLess(key, value)
+
+#### QueryConditionsBuilder.prototype.orWhereLessEq(key, value)
+
 #### QueryConditionsBuilder.prototype.orWhereLike(key, value)
+
+#### QueryConditionsBuilder.prototype.orWhereMore(key, value)
+
+#### QueryConditionsBuilder.prototype.orWhereMoreEq(key, value)
 
 #### QueryConditionsBuilder.prototype.orWhereNot(key, cond, value)
 
@@ -294,13 +330,43 @@ Build params for this query
 
 #### SelectBuilder.prototype.count(field = '\*', alias)
 
+#### SelectBuilder.prototype.crossJoin(tableName)
+
+#### SelectBuilder.prototype.crossJoinAs(tableName, alias)
+
 #### SelectBuilder.prototype.distinct()
 
 #### SelectBuilder.prototype.from(tableName, alias)
 
+#### SelectBuilder.prototype.fullJoin(tableName, leftKey, rightKey)
+
+#### SelectBuilder.prototype.fullJoinAs(tableName, alias, leftKey, rightKey)
+
+#### SelectBuilder.prototype.fullJoinCond(tableName, condition)
+
+#### SelectBuilder.prototype.fullJoinCondAs(tableName, alias, condition)
+
 #### SelectBuilder.prototype.groupBy(...fields)
 
 #### SelectBuilder.prototype.innerJoin(tableName, leftKey, rightKey)
+
+#### SelectBuilder.prototype.innerJoinAs(tableName, alias, leftKey, rightKey)
+
+#### SelectBuilder.prototype.innerJoinCond(tableName, condition)
+
+#### SelectBuilder.prototype.innerJoinCondAs(tableName, alias, condition)
+
+#### SelectBuilder.prototype.join(kind, tableName, alias, leftKey, rightKey)
+
+#### SelectBuilder.prototype.joinCond(kind, tableName, alias, condition)
+
+#### SelectBuilder.prototype.leftJoin(tableName, leftKey, rightKey)
+
+#### SelectBuilder.prototype.leftJoinAs(tableName, alias, leftKey, rightKey)
+
+#### SelectBuilder.prototype.leftJoinCond(tableName, condition)
+
+#### SelectBuilder.prototype.leftJoinCondAs(tableName, alias, condition)
 
 #### SelectBuilder.prototype.limit(limit)
 
@@ -308,9 +374,21 @@ Build params for this query
 
 #### SelectBuilder.prototype.min(field, alias)
 
+#### SelectBuilder.prototype.naturalJoin(tableName)
+
+#### SelectBuilder.prototype.naturalJoinAs(tableName, alias)
+
 #### SelectBuilder.prototype.offset(offset)
 
 #### SelectBuilder.prototype.orderBy(field, dir = 'ASC')
+
+#### SelectBuilder.prototype.rightJoin(tableName, leftKey, rightKey)
+
+#### SelectBuilder.prototype.rightJoinAs(tableName, alias, leftKey, rightKey)
+
+#### SelectBuilder.prototype.rightJoinCond(tableName, condition)
+
+#### SelectBuilder.prototype.rightJoinCondAs(tableName, alias, condition)
 
 #### SelectBuilder.prototype.select(...fields)
 

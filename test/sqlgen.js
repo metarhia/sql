@@ -875,6 +875,64 @@ test.testSync('Select with inner join', (test, { builder, params }) => {
   test.strictSame(params.build(), ['abc']);
 });
 
+test.testSync('Select with inner join as', (test, { builder, params }) => {
+  builder
+    .from('table1')
+    .innerJoinAs('table2', 't2', 'table1.f', 't2.f')
+    .where('table1.f', '=', 'abc');
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'SELECT * FROM "table1" ' +
+      'INNER JOIN "table2" AS "t2" ON "table1"."f" = "t2"."f" ' +
+      'WHERE "table1"."f" = $1'
+  );
+  test.strictSame(params.build(), ['abc']);
+});
+
+test.testSync(
+  'Select with inner join condition',
+  (test, { builder, params }) => {
+    builder
+      .from('table1')
+      .innerJoinCond(
+        'table2',
+        builder.raw(() => `"table1"."f" = "table2"."f"`)
+      )
+      .where('table1.f', '=', 'abc');
+    const query = builder.build();
+    test.strictSame(
+      query,
+      'SELECT * FROM "table1" ' +
+        'INNER JOIN "table2" ON "table1"."f" = "table2"."f" ' +
+        'WHERE "table1"."f" = $1'
+    );
+    test.strictSame(params.build(), ['abc']);
+  }
+);
+
+test.testSync(
+  'Select with inner join as condition',
+  (test, { builder, params }) => {
+    builder
+      .from('table1')
+      .innerJoinCondAs(
+        'table2',
+        't2',
+        builder.raw(() => `"table1"."f" = "t2"."f"`)
+      )
+      .where('table1.f', '=', 'abc');
+    const query = builder.build();
+    test.strictSame(
+      query,
+      'SELECT * FROM "table1" ' +
+        'INNER JOIN "table2" AS "t2" ON "table1"."f" = "t2"."f" ' +
+        'WHERE "table1"."f" = $1'
+    );
+    test.strictSame(params.build(), ['abc']);
+  }
+);
+
 test.testSync(
   'Select with inner join and where raw',
   (test, { builder, params }) => {
@@ -954,6 +1012,271 @@ test.testSync(
     test.strictSame(params.build(), ['abc']);
   }
 );
+
+test.testSync('Select with left join', (test, { builder, params }) => {
+  builder
+    .from('table1')
+    .leftJoin('table2', 'table1.f', 'table2.f')
+    .where('table1.f', '=', 'abc');
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'SELECT * FROM "table1" ' +
+      'LEFT OUTER JOIN "table2" ON "table1"."f" = "table2"."f" ' +
+      'WHERE "table1"."f" = $1'
+  );
+  test.strictSame(params.build(), ['abc']);
+});
+
+test.testSync('Select with left join as', (test, { builder, params }) => {
+  builder
+    .from('table1')
+    .leftJoinAs('table2', 't2', 'table1.f', 't2.f')
+    .where('table1.f', '=', 'abc');
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'SELECT * FROM "table1" ' +
+      'LEFT OUTER JOIN "table2" AS "t2" ON "table1"."f" = "t2"."f" ' +
+      'WHERE "table1"."f" = $1'
+  );
+  test.strictSame(params.build(), ['abc']);
+});
+
+test.testSync(
+  'Select with left join condition',
+  (test, { builder, params }) => {
+    builder
+      .from('table1')
+      .leftJoinCond(
+        'table2',
+        builder.raw(() => `"table1"."f" = "table2"."f"`)
+      )
+      .where('table1.f', '=', 'abc');
+    const query = builder.build();
+    test.strictSame(
+      query,
+      'SELECT * FROM "table1" ' +
+        'LEFT OUTER JOIN "table2" ON "table1"."f" = "table2"."f" ' +
+        'WHERE "table1"."f" = $1'
+    );
+    test.strictSame(params.build(), ['abc']);
+  }
+);
+
+test.testSync(
+  'Select with left join as condition',
+  (test, { builder, params }) => {
+    builder
+      .from('table1')
+      .leftJoinCondAs(
+        'table2',
+        't2',
+        builder.raw(() => `"table1"."f" = "t2"."f"`)
+      )
+      .where('table1.f', '=', 'abc');
+    const query = builder.build();
+    test.strictSame(
+      query,
+      'SELECT * FROM "table1" ' +
+        'LEFT OUTER JOIN "table2" AS "t2" ON "table1"."f" = "t2"."f" ' +
+        'WHERE "table1"."f" = $1'
+    );
+    test.strictSame(params.build(), ['abc']);
+  }
+);
+
+test.testSync('Select with right join', (test, { builder, params }) => {
+  builder
+    .from('table1')
+    .rightJoin('table2', 'table1.f', 'table2.f')
+    .where('table1.f', '=', 'abc');
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'SELECT * FROM "table1" ' +
+      'RIGHT OUTER JOIN "table2" ON "table1"."f" = "table2"."f" ' +
+      'WHERE "table1"."f" = $1'
+  );
+  test.strictSame(params.build(), ['abc']);
+});
+
+test.testSync('Select with right join as', (test, { builder, params }) => {
+  builder
+    .from('table1')
+    .rightJoinAs('table2', 't2', 'table1.f', 't2.f')
+    .where('table1.f', '=', 'abc');
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'SELECT * FROM "table1" ' +
+      'RIGHT OUTER JOIN "table2" AS "t2" ON "table1"."f" = "t2"."f" ' +
+      'WHERE "table1"."f" = $1'
+  );
+  test.strictSame(params.build(), ['abc']);
+});
+
+test.testSync(
+  'Select with right join condition',
+  (test, { builder, params }) => {
+    builder
+      .from('table1')
+      .rightJoinCond(
+        'table2',
+        builder.raw(() => `"table1"."f" = "table2"."f"`)
+      )
+      .where('table1.f', '=', 'abc');
+    const query = builder.build();
+    test.strictSame(
+      query,
+      'SELECT * FROM "table1" ' +
+        'RIGHT OUTER JOIN "table2" ON "table1"."f" = "table2"."f" ' +
+        'WHERE "table1"."f" = $1'
+    );
+    test.strictSame(params.build(), ['abc']);
+  }
+);
+
+test.testSync(
+  'Select with right join as condition',
+  (test, { builder, params }) => {
+    builder
+      .from('table1')
+      .rightJoinCondAs(
+        'table2',
+        't2',
+        builder.raw(() => `"table1"."f" = "t2"."f"`)
+      )
+      .where('table1.f', '=', 'abc');
+    const query = builder.build();
+    test.strictSame(
+      query,
+      'SELECT * FROM "table1" ' +
+        'RIGHT OUTER JOIN "table2" AS "t2" ON "table1"."f" = "t2"."f" ' +
+        'WHERE "table1"."f" = $1'
+    );
+    test.strictSame(params.build(), ['abc']);
+  }
+);
+
+test.testSync('Select with full join', (test, { builder, params }) => {
+  builder
+    .from('table1')
+    .fullJoin('table2', 'table1.f', 'table2.f')
+    .where('table1.f', '=', 'abc');
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'SELECT * FROM "table1" ' +
+      'FULL OUTER JOIN "table2" ON "table1"."f" = "table2"."f" ' +
+      'WHERE "table1"."f" = $1'
+  );
+  test.strictSame(params.build(), ['abc']);
+});
+
+test.testSync('Select with full join as', (test, { builder, params }) => {
+  builder
+    .from('table1')
+    .fullJoinAs('table2', 't2', 'table1.f', 't2.f')
+    .where('table1.f', '=', 'abc');
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'SELECT * FROM "table1" ' +
+      'FULL OUTER JOIN "table2" AS "t2" ON "table1"."f" = "t2"."f" ' +
+      'WHERE "table1"."f" = $1'
+  );
+  test.strictSame(params.build(), ['abc']);
+});
+
+test.testSync(
+  'Select with full join condition',
+  (test, { builder, params }) => {
+    builder
+      .from('table1')
+      .fullJoinCond(
+        'table2',
+        builder.raw(() => `"table1"."f" = "table2"."f"`)
+      )
+      .where('table1.f', '=', 'abc');
+    const query = builder.build();
+    test.strictSame(
+      query,
+      'SELECT * FROM "table1" ' +
+        'FULL OUTER JOIN "table2" ON "table1"."f" = "table2"."f" ' +
+        'WHERE "table1"."f" = $1'
+    );
+    test.strictSame(params.build(), ['abc']);
+  }
+);
+
+test.testSync(
+  'Select with full join as condition',
+  (test, { builder, params }) => {
+    builder
+      .from('table1')
+      .fullJoinCondAs(
+        'table2',
+        't2',
+        builder.raw(() => `"table1"."f" = "t2"."f"`)
+      )
+      .where('table1.f', '=', 'abc');
+    const query = builder.build();
+    test.strictSame(
+      query,
+      'SELECT * FROM "table1" ' +
+        'FULL OUTER JOIN "table2" AS "t2" ON "table1"."f" = "t2"."f" ' +
+        'WHERE "table1"."f" = $1'
+    );
+    test.strictSame(params.build(), ['abc']);
+  }
+);
+
+test.testSync('Select with natural join', (test, { builder, params }) => {
+  builder.from('table1').naturalJoin('table2').where('table1.f', '=', 'abc');
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'SELECT * FROM "table1" NATURAL JOIN "table2" WHERE "table1"."f" = $1'
+  );
+  test.strictSame(params.build(), ['abc']);
+});
+
+test.testSync('Select with natural join as', (test, { builder, params }) => {
+  builder
+    .from('table1')
+    .naturalJoinAs('table2', 't2')
+    .where('table1.f', '=', 'abc');
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'SELECT * FROM "table1" NATURAL JOIN "table2" AS "t2" WHERE "table1"."f" = $1'
+  );
+  test.strictSame(params.build(), ['abc']);
+});
+
+test.testSync('Select with cross join', (test, { builder, params }) => {
+  builder.from('table1').crossJoin('table2').where('table1.f', '=', 'abc');
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'SELECT * FROM "table1" CROSS JOIN "table2" WHERE "table1"."f" = $1'
+  );
+  test.strictSame(params.build(), ['abc']);
+});
+
+test.testSync('Select with cross join as', (test, { builder, params }) => {
+  builder
+    .from('table1')
+    .crossJoinAs('table2', 't2')
+    .where('table1.f', '=', 'abc');
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'SELECT * FROM "table1" CROSS JOIN "table2" AS "t2" WHERE "table1"."f" = $1'
+  );
+  test.strictSame(params.build(), ['abc']);
+});
 
 test.testSync('Select where nested', (test, { builder, params }) => {
   const nested = new SelectBuilder(builder.params)
