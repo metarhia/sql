@@ -1,5 +1,5 @@
 import { ParamsBuilder } from './params-builder';
-import { QueryBuilder, QueryBuilderOptions } from './query-builder';
+import { QueryBuilder, QueryBuilderOptions, QueryValue } from './query-builder';
 import { QueryConditionsBuilder } from './query-conditions-builder';
 
 export interface SelectBuilderOptions extends QueryBuilderOptions {}
@@ -8,7 +8,7 @@ export type SelectQueryValue =
   | QueryBuilder
   | ((builder: SelectBuilder) => QueryBuilder);
 
-export type SelectConditionValue = unknown | SelectQueryValue;
+export type SelectConditionValue = QueryValue | SelectQueryValue;
 
 export type JoinKind =
   | 'INNER'

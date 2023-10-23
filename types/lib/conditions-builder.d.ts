@@ -2,28 +2,31 @@ import { ParamsBuilder } from './params-builder';
 import {
   QueryBuilder,
   QueryBuilderOptions,
+  QueryValue,
   SqlTemplate,
 } from './query-builder';
 
 export interface ConditionsBuilderOptions extends QueryBuilderOptions {}
 
-type QueryValue = QueryBuilder | ((builder: ConditionsBuilder) => QueryBuilder);
+type ConditionsQueryValue =
+  | QueryBuilder
+  | ((builder: ConditionsBuilder) => QueryBuilder);
 
-type ConditionValue = any | QueryBuilder;
+type ConditionValue = QueryValue | QueryBuilder;
 
 export class ConditionsBuilder extends QueryBuilder<ConditionsBuilderOptions> {
   constructor(params: ParamsBuilder, options?: ConditionsBuilderOptions);
 
   and(key: string, cond: string, value: ConditionValue): this;
-  and(key: QueryValue): this;
-  andConds(conds: QueryValue): this;
+  and(key: ConditionsQueryValue): this;
+  andConds(conds: ConditionsQueryValue): this;
 
   andKey(leftKey: string, cond: string, rightKey: string): this;
   andRaw(sql: SqlTemplate): this;
 
   or(key: string, cond: string, value: ConditionValue): this;
-  or(key: QueryValue): this;
-  orConds(conds: QueryValue): this;
+  or(key: ConditionsQueryValue): this;
+  orConds(conds: ConditionsQueryValue): this;
 
   orKey(leftKey: string, cond: string, rightKey: string): this;
   orRaw(sql: SqlTemplate): this;

@@ -1,5 +1,14 @@
 import { ParamsBuilder } from './params-builder';
 
+export type QueryValue =
+  | string
+  | number
+  | boolean
+  | Date
+  | null
+  | QueryValue[]
+  | Set<QueryValue>;
+
 export interface QueryBuilderOptions {
   escapeIdentifier?: (key: string) => string;
 }
