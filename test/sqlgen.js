@@ -593,7 +593,10 @@ test.testSync('Select fn operation', (test, { builder, params }) => {
 test.testSync('Select custom operation', (test, { builder, params }) => {
   builder.from('table').selectRaw('array_agg("f1")').whereEq('f2', 42);
   const query = builder.build();
-  test.strictSame(query, 'SELECT array_agg("f1") FROM "table" WHERE "f2" = $1');
+  test.strictSame(
+    query,
+    'SELECT (array_agg("f1")) FROM "table" WHERE "f2" = $1'
+  );
   test.strictSame(params.build(), [42]);
 });
 
@@ -607,7 +610,7 @@ test.testSync(
     const query = builder.build();
     test.strictSame(
       query,
-      'SELECT array_agg("f1") FROM "table" WHERE "f2" = $1'
+      'SELECT (array_agg("f1")) FROM "table" WHERE "f2" = $1'
     );
     test.strictSame(params.build(), [42]);
   }
@@ -623,7 +626,7 @@ test.testSync(
     const query = builder.build();
     test.strictSame(
       query,
-      'SELECT array_agg("f1") FROM "table" WHERE "f2" = $1'
+      'SELECT (array_agg("f1")) FROM "table" WHERE "f2" = $1'
     );
     test.strictSame(params.build(), [42]);
   }
@@ -1788,3 +1791,52 @@ test.testSync(
     test.strictSame(params.build(), [52, date]);
   }
 );
+
+test.testSync('Select select-nested', (test, { builder, params }) => {
+  builder
+    .from('table1')
+    .select('r1', (n) =>
+      n.from('table2').select('A').select().where('f1', '=', 42)
+    )
+    .where('a', '=', 42);
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'SELECT "r1", (SELECT "A" FROM "table2" WHERE "f1" = $1) FROM "table1" WHERE "a" = $2'
+  );
+  test.strictSame(params.build(), [42, 42]);
+});
+
+test.testSync('Select select-nested-fn as', (test, { builder, params }) => {
+  builder
+    .from('table1')
+    .select('r1')
+    .selectAs(
+      (n) => n.from('table2').select('A').select().where('f1', '=', 42),
+      'r2'
+    )
+    .where('a', '=', 42);
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'SELECT "r1", (SELECT "A" FROM "table2" WHERE "f1" = $1) AS "r2" FROM "table1" WHERE "a" = $2'
+  );
+  test.strictSame(params.build(), [42, 42]);
+});
+
+test.testSync('Select select nested as', (test, { builder, params }) => {
+  builder
+    .from('table1')
+    .select('r1')
+    .selectAs(
+      builder.nested().from('table2').select('A').select().where('f1', '=', 42),
+      'r2'
+    )
+    .where('a', '=', 42);
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'SELECT "r1", (SELECT "A" FROM "table2" WHERE "f1" = $1) AS "r2" FROM "table1" WHERE "a" = $2'
+  );
+  test.strictSame(params.build(), [42, 42]);
+});

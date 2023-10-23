@@ -6,6 +6,8 @@ export interface QueryBuilderOptions {
 
 // Base class for all QueryBuilders
 export class QueryBuilder<O extends QueryBuilderOptions = QueryBuilderOptions> {
+  public params: ParamsBuilder;
+
   constructor(params: ParamsBuilder, options?: O);
 
   makeParamValue(value: unknown | QueryBuilder): string;
@@ -13,6 +15,8 @@ export class QueryBuilder<O extends QueryBuilderOptions = QueryBuilderOptions> {
   makeKeyOrExpr(value: string | QueryBuilder): string;
 
   raw(sqlTemplate: SqlTemplate): RawBuilder;
+
+  nested(): this;
 
   // Build and return the SQL query.
   build(): string;
