@@ -1,19 +1,13 @@
 import { ParamsBuilder } from './params-builder';
-import { QueryBuilder, QueryBuilderOptions } from './query-builder';
+import { QueryBuilder, QueryBuilderOptions, QueryValue } from './query-builder';
 import { QueryConditionsBuilder } from './query-conditions-builder';
-import { SelectBuilder } from './select-builder';
+import { SelectConditionValue } from './select-builder';
 
 export interface DeleteBuilderOptions extends QueryBuilderOptions {}
 
-export type QueryValue =
-  | QueryBuilder
-  | ((builder: SelectBuilder) => QueryBuilder);
-
-export type ConditionValue = any | QueryValue;
-
 export class DeleteBuilder extends QueryConditionsBuilder<
   DeleteBuilderOptions,
-  ConditionValue
+  SelectConditionValue
 > {
   constructor(params: ParamsBuilder, options?: DeleteBuilderOptions);
 

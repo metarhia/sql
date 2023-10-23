@@ -1,5 +1,5 @@
 import { ParamsBuilder } from './params-builder';
-import { QueryBuilder, QueryBuilderOptions } from './query-builder';
+import { QueryBuilder, QueryBuilderOptions, QueryValue } from './query-builder';
 import { QueryConditionsBuilder } from './query-conditions-builder';
 
 export interface SelectBuilderOptions extends QueryBuilderOptions {}
@@ -8,7 +8,7 @@ export type SelectQueryValue =
   | QueryBuilder
   | ((builder: SelectBuilder) => QueryBuilder);
 
-export type SelectConditionValue = any | SelectQueryValue;
+export type SelectConditionValue = QueryValue | SelectQueryValue;
 
 export type JoinKind =
   | 'INNER'
@@ -18,21 +18,20 @@ export type JoinKind =
   | 'NATURAL'
   | 'CROSS';
 
-export class SelectBuilder extends QueryConditionsBuilder<
-  SelectBuilderOptions,
-  SelectConditionValue
-> {
+export class SelectBuilder<
+  CV = SelectConditionValue,
+> extends QueryConditionsBuilder<SelectBuilderOptions, CV> {
   constructor(params: ParamsBuilder, options?: SelectBuilderOptions);
 
   from(tableName: string, alias?: string): this;
 
-  select(...fields: string[]): this;
+  select(...fields: Array<string | CV>): this;
 
-  selectAs(field: string, alias: string): this;
+  selectAs(field: string | CV, alias: string): this;
 
-  selectFn(fn: string, field: string, alias: string): this;
+  selectFn(fn: string, field: string | CV, alias: string): this;
 
-  selectRaw(sql: QueryBuilder | string): this;
+  selectRaw(sql: string | CV): this;
 
   innerJoin(tableName: string, leftKey: string, rightKey: string): this;
 

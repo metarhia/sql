@@ -1,11 +1,22 @@
 import { ParamsBuilder } from './params-builder';
 
+export type QueryValue =
+  | string
+  | number
+  | boolean
+  | Date
+  | null
+  | QueryValue[]
+  | Set<QueryValue>;
+
 export interface QueryBuilderOptions {
   escapeIdentifier?: (key: string) => string;
 }
 
 // Base class for all QueryBuilders
 export class QueryBuilder<O extends QueryBuilderOptions = QueryBuilderOptions> {
+  public params: ParamsBuilder;
+
   constructor(params: ParamsBuilder, options?: O);
 
   makeParamValue(value: unknown | QueryBuilder): string;
@@ -13,6 +24,8 @@ export class QueryBuilder<O extends QueryBuilderOptions = QueryBuilderOptions> {
   makeKeyOrExpr(value: string | QueryBuilder): string;
 
   raw(sqlTemplate: SqlTemplate): RawBuilder;
+
+  nested(): this;
 
   // Build and return the SQL query.
   build(): string;

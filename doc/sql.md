@@ -7,6 +7,7 @@
     - [QueryBuilder.prototype.buildParams](#querybuilderprototypebuildparams)
     - [QueryBuilder.prototype.makeKeyOrExpr](#querybuilderprototypemakekeyorexprvalue-wrap--false)
     - [QueryBuilder.prototype.makeParamValue](#querybuilderprototypemakeparamvaluevalue)
+    - [QueryBuilder.prototype.nested](#querybuilderprototypenested)
     - [QueryBuilder.prototype.raw](#querybuilderprototyperawsqltemplate)
   - [QueryConditionsBuilder](#class-queryconditionsbuilder-extends-querybuilder)
     - [QueryConditionsBuilder.prototype.constructor](#queryconditionsbuilderprototypeconstructorparams-options)
@@ -60,7 +61,6 @@
   - [SelectBuilder](#class-selectbuilder-extends-queryconditionsbuilder)
     - [SelectBuilder.prototype.constructor](#selectbuilderprototypeconstructorparams-options)
     - [SelectBuilder.prototype.\_addSelectClause](#selectbuilderprototype_addselectclausetype-field-alias)
-    - [SelectBuilder.prototype.\_processDistinct](#selectbuilderprototype_processdistinct)
     - [SelectBuilder.prototype.avg](#selectbuilderprototypeavgfield-alias)
     - [SelectBuilder.prototype.build](#selectbuilderprototypebuild)
     - [SelectBuilder.prototype.count](#selectbuilderprototypecountfield---alias)
@@ -95,7 +95,7 @@
     - [SelectBuilder.prototype.rightJoinCond](#selectbuilderprototyperightjoincondtablename-condition)
     - [SelectBuilder.prototype.rightJoinCondAs](#selectbuilderprototyperightjoincondastablename-alias-condition)
     - [SelectBuilder.prototype.select](#selectbuilderprototypeselectfields)
-    - [SelectBuilder.prototype.selectAs](#selectbuilderprototypeselectasfield-alias)
+    - [SelectBuilder.prototype.selectAs](#selectbuilderprototypeselectasfieldorbuilder-alias)
     - [SelectBuilder.prototype.selectFn](#selectbuilderprototypeselectfnfn-field-alias)
     - [SelectBuilder.prototype.selectRaw](#selectbuilderprototypeselectrawsqlorbuilder)
     - [SelectBuilder.prototype.sum](#selectbuilderprototypesumfield-alias)
@@ -127,7 +127,6 @@
     - [PgInsertBuilder.prototype.returning](#pginsertbuilderprototypereturningkey-alias)
   - [PgSelectBuilder](#class-pgselectbuilder-extends-selectbuilder)
     - [PgSelectBuilder.prototype.constructor](#pgselectbuilderprototypeconstructorparams-options)
-    - [PgSelectBuilder.prototype.\_processDistinct](#pgselectbuilderprototype_processdistinct)
     - [PgSelectBuilder.prototype.distinctOn](#pgselectbuilderprototypedistinctonkeyorexpr)
   - [ConditionsBuilder](#class-conditionsbuilder-extends-querybuilder)
     - [ConditionsBuilder.prototype.constructor](#conditionsbuilderprototypeconstructorparams-options)
@@ -215,6 +214,8 @@ Build params for this query
 #### QueryBuilder.prototype.makeKeyOrExpr(value, wrap = false)
 
 #### QueryBuilder.prototype.makeParamValue(value)
+
+#### QueryBuilder.prototype.nested()
 
 #### QueryBuilder.prototype.raw(sqlTemplate)
 
@@ -322,8 +323,6 @@ Build params for this query
 
 #### SelectBuilder.prototype.\_addSelectClause(type, field, alias)
 
-#### SelectBuilder.prototype.\_processDistinct()
-
 #### SelectBuilder.prototype.avg(field, alias)
 
 #### SelectBuilder.prototype.build()
@@ -392,7 +391,7 @@ Build params for this query
 
 #### SelectBuilder.prototype.select(...fields)
 
-#### SelectBuilder.prototype.selectAs(field, alias)
+#### SelectBuilder.prototype.selectAs(fieldOrBuilder, alias)
 
 #### SelectBuilder.prototype.selectFn(fn, field, alias)
 
@@ -459,8 +458,6 @@ Build params for this query
 ### class PgSelectBuilder extends [SelectBuilder][sql-selectbuilder]
 
 #### PgSelectBuilder.prototype.constructor(params, options)
-
-#### PgSelectBuilder.prototype.\_processDistinct()
 
 #### PgSelectBuilder.prototype.distinctOn(keyOrExpr)
 

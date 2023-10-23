@@ -1,6 +1,11 @@
 import { SelectBuilder } from './select-builder';
-import { QueryBuilder } from './query-builder';
+import { QueryBuilder, QueryValue } from './query-builder';
 
-export class PgSelectBuilder extends SelectBuilder {
+export type PgSelectConditionValue =
+  | QueryBuilder
+  | ((builder: PgSelectBuilder) => QueryBuilder)
+  | QueryValue;
+
+export class PgSelectBuilder extends SelectBuilder<PgSelectConditionValue> {
   distinctOn(keyOrExpr: string | '*' | QueryBuilder): this;
 }

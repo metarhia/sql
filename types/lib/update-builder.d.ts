@@ -17,5 +17,5 @@ export class UpdateBuilder extends QueryConditionsBuilder<
 
   set(key: string, value: SelectConditionValue): this;
 
-  sets(obj: Record<string, SelectConditionValue>): this;
+  sets<T extends object>(obj: T): this;
 }

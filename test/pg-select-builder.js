@@ -27,3 +27,17 @@ test.testSync('select with distinct on', (test, { builder, params }) => {
   );
   test.strictSame(params.build(), [3]);
 });
+
+test.testSync('nested select must be PgSelectBuilder', (test, { builder }) => {
+  const nested = builder.nested();
+  test.type(nested, 'PgSelectBuilder');
+});
+
+test.testSync('must provide PgSelectBuilder in select', (test, { builder }) => {
+  test.plan(1);
+  builder.from('table1').select((b) => {
+    test.type(b, 'PgSelectBuilder');
+    return b.from('table2');
+  });
+  builder.build();
+});
