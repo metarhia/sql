@@ -11,5 +11,5 @@ export class InsertBuilder extends QueryBuilder<InsertBuilderOptions> {
 
   value(key: string, value: SelectConditionValue): this;
 
-  values(obj: Record<string, SelectConditionValue>): this;
+  values<T extends object>(obj: T): this;
 }
