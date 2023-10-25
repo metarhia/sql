@@ -593,19 +593,49 @@ test.testSync('Select fn operation', (test, { builder, params }) => {
 test.testSync('Select custom operation', (test, { builder, params }) => {
   builder.from('table').selectRaw('array_agg("f1")').whereEq('f2', 42);
   const query = builder.build();
-  test.strictSame(
-    query,
-    'SELECT (array_agg("f1")) FROM "table" WHERE "f2" = $1'
-  );
+  test.strictSame(query, 'SELECT array_agg("f1") FROM "table" WHERE "f2" = $1');
   test.strictSame(params.build(), [42]);
 });
+
+test.testSync(
+  'Select raw custom operation with QueryBuilder',
+  (test, { builder, params }) => {
+    builder
+      .from('table')
+      .selectRaw(new RawBuilder('array_agg("f1")'))
+      .whereEq('f2', 42);
+    const query = builder.build();
+    test.strictSame(
+      query,
+      'SELECT array_agg("f1") FROM "table" WHERE "f2" = $1'
+    );
+    test.strictSame(params.build(), [42]);
+  }
+);
+
+test.testSync(
+  'Select raw with function builder with QueryBuilder',
+  (test, { builder, params }) => {
+    builder
+      .from('table')
+      .selectRaw((b) => b.from('table').select('a').limit(1))
+      .whereEq('f2', 42);
+    const query = builder.build();
+    // Invalid query here because of selectRaw.
+    test.strictSame(
+      query,
+      'SELECT SELECT "a" FROM "table" LIMIT $1 FROM "table" WHERE "f2" = $2'
+    );
+    test.strictSame(params.build(), [1, 42]);
+  }
+);
 
 test.testSync(
   'Select custom operation with QueryBuilder',
   (test, { builder, params }) => {
     builder
       .from('table')
-      .selectRaw(new RawBuilder('array_agg("f1")'))
+      .select(new RawBuilder('array_agg("f1")'))
       .whereEq('f2', 42);
     const query = builder.build();
     test.strictSame(
@@ -626,11 +656,21 @@ test.testSync(
     const query = builder.build();
     test.strictSame(
       query,
-      'SELECT (array_agg("f1")) FROM "table" WHERE "f2" = $1'
+      'SELECT array_agg("f1") FROM "table" WHERE "f2" = $1'
     );
     test.strictSame(params.build(), [42]);
   }
 );
+
+test.testSync('Select raw with count', (test, { builder, params }) => {
+  builder.from('table').selectRaw('COUNT(*) as count').whereEq('f2', 42);
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'SELECT COUNT(*) as count FROM "table" WHERE "f2" = $1'
+  );
+  test.strictSame(params.build(), [42]);
+});
 
 test.testSync(
   'Select multiple operations order',
