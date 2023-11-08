@@ -128,7 +128,11 @@ export class SelectBuilder<
 
   orderBy(field: string, dir?: 'ASC' | 'DESC'): this;
 
+  orderByRaw(raw: QueryBuilder | string): this;
+
   groupBy(...field: string[]): this;
+
+  groupByRaw(raw: QueryBuilder | string): this;
 
   limit(limit: number): this;
 
