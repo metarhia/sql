@@ -73,6 +73,7 @@
     - [SelectBuilder.prototype.fullJoinCond](#selectbuilderprototypefulljoincondtablename-condition)
     - [SelectBuilder.prototype.fullJoinCondAs](#selectbuilderprototypefulljoincondastablename-alias-condition)
     - [SelectBuilder.prototype.groupBy](#selectbuilderprototypegroupbyfields)
+    - [SelectBuilder.prototype.groupByRaw](#selectbuilderprototypegroupbyrawraw)
     - [SelectBuilder.prototype.innerJoin](#selectbuilderprototypeinnerjointablename-leftkey-rightkey)
     - [SelectBuilder.prototype.innerJoinAs](#selectbuilderprototypeinnerjoinastablename-alias-leftkey-rightkey)
     - [SelectBuilder.prototype.innerJoinCond](#selectbuilderprototypeinnerjoincondtablename-condition)
@@ -90,6 +91,7 @@
     - [SelectBuilder.prototype.naturalJoinAs](#selectbuilderprototypenaturaljoinastablename-alias)
     - [SelectBuilder.prototype.offset](#selectbuilderprototypeoffsetoffset)
     - [SelectBuilder.prototype.orderBy](#selectbuilderprototypeorderbyfield-dir--asc)
+    - [SelectBuilder.prototype.orderByRaw](#selectbuilderprototypeorderbyrawraw)
     - [SelectBuilder.prototype.rightJoin](#selectbuilderprototyperightjointablename-leftkey-rightkey)
     - [SelectBuilder.prototype.rightJoinAs](#selectbuilderprototyperightjoinastablename-alias-leftkey-rightkey)
     - [SelectBuilder.prototype.rightJoinCond](#selectbuilderprototyperightjoincondtablename-condition)
@@ -347,6 +349,8 @@ Build params for this query
 
 #### SelectBuilder.prototype.groupBy(...fields)
 
+#### SelectBuilder.prototype.groupByRaw(raw)
+
 #### SelectBuilder.prototype.innerJoin(tableName, leftKey, rightKey)
 
 #### SelectBuilder.prototype.innerJoinAs(tableName, alias, leftKey, rightKey)
@@ -380,6 +384,8 @@ Build params for this query
 #### SelectBuilder.prototype.offset(offset)
 
 #### SelectBuilder.prototype.orderBy(field, dir = 'ASC')
+
+#### SelectBuilder.prototype.orderByRaw(raw)
 
 #### SelectBuilder.prototype.rightJoin(tableName, leftKey, rightKey)
 
