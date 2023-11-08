@@ -279,6 +279,32 @@ test.testSync('Select all order offset', (test, { builder, params }) => {
   test.strictSame(params.build(), [10]);
 });
 
+test.testSync('Select order by raw', (test, { builder, params }) => {
+  builder
+    .from('table')
+    .orderBy('f5', 'DESC')
+    .orderByRaw('least("f1", "f2") ASC');
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'SELECT * FROM "table" ORDER BY "f5" DESC, least("f1", "f2") ASC'
+  );
+  test.strictSame(params.build(), []);
+});
+
+test.testSync('Select all order by raw query', (test, { builder, params }) => {
+  builder
+    .from('table')
+    .orderBy('f5', 'DESC')
+    .orderByRaw(builder.raw((p) => `least("f1", "f2", ${p.add(42)}) ASC`));
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'SELECT * FROM "table" ORDER BY "f5" DESC, least("f1", "f2", $1) ASC'
+  );
+  test.strictSame(params.build(), [42]);
+});
+
 test.testSync('Select few order desc limit', (test, { builder, params }) => {
   builder.from('table').select('f1', 'f2').orderBy('f1', 'desc').limit(10);
   const query = builder.build();
@@ -806,6 +832,23 @@ test.testSync(
       'SELECT * FROM "table" WHERE "f1" NOT ILIKE $1 OR "f2" ILIKE $2'
     );
     test.strictSame(params.build(), ['abc', 'abc']);
+  }
+);
+
+test.testSync(
+  'Select where or ilike or ilike and like',
+  (test, { builder, params }) => {
+    builder
+      .from('table')
+      .orWhereILike('f1', 'abc')
+      .orWhereILike('f2', 'abc')
+      .whereLike('f3', 'bbb');
+    const query = builder.build();
+    test.strictSame(
+      query,
+      'SELECT * FROM "table" WHERE "f1" ILIKE $1 OR "f2" ILIKE $2 AND "f3" LIKE $3'
+    );
+    test.strictSame(params.build(), ['abc', 'abc', 'bbbk']);
   }
 );
 
@@ -1452,6 +1495,25 @@ test.testSync('Select simple use alias', (test, { builder }) => {
   test.strictSame(
     builder.build(),
     'SELECT "f1" AS "hello", "f2" FROM "table1" GROUP BY "hello"'
+  );
+});
+
+test.testSync('Select group by raw', (test, { builder }) => {
+  builder.from('table1').groupByRaw('date("f1")').groupBy('f2');
+  test.strictSame(
+    builder.build(),
+    'SELECT * FROM "table1" GROUP BY date("f1"), "f2"'
+  );
+});
+
+test.testSync('Select group by raw query', (test, { builder }) => {
+  builder
+    .from('table1')
+    .groupByRaw(builder.raw(() => 'date("f1")'))
+    .groupBy('f2');
+  test.strictSame(
+    builder.build(),
+    'SELECT * FROM "table1" GROUP BY date("f1"), "f2"'
   );
 });
 
