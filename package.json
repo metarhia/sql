@@ -1,6 +1,6 @@
 {
   "name": "@metarhia/sql",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Metarhia SQL utilities",
   "main": "sql.js",
   "types": "types/sql.d.ts",
