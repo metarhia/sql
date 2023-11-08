@@ -848,7 +848,7 @@ test.testSync(
       query,
       'SELECT * FROM "table" WHERE "f1" ILIKE $1 OR "f2" ILIKE $2 AND "f3" LIKE $3'
     );
-    test.strictSame(params.build(), ['abc', 'abc', 'bbbk']);
+    test.strictSame(params.build(), ['abc', 'abc', 'bbb']);
   }
 );
 
