@@ -140,6 +140,8 @@ export class SelectBuilder<
 
   count(field?: string, alias?: string): this;
 
+  countOver(field?: string, alias?: string): this;
+
   avg(field: string, alias?: string): this;
 
   min(field: string, alias?: string): this;

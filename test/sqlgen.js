@@ -220,6 +220,40 @@ test.testSync(
   }
 );
 
+test.testSync(
+  'Select all multiple where count over',
+  (test, { builder, params }) => {
+    builder
+      .from('table')
+      .where('f1', '=', 3)
+      .where('f2', '<', 'abc')
+      .countOver('f0');
+    const query = builder.build();
+    test.strictSame(
+      query,
+      'SELECT (COUNT("f0") OVER()) FROM "table" WHERE "f1" = $1 AND "f2" < $2'
+    );
+    test.strictSame(params.build(), [3, 'abc']);
+  }
+);
+
+test.testSync(
+  'Select all multiple where count over alias',
+  (test, { builder, params }) => {
+    builder
+      .from('table')
+      .where('f1', '=', 3)
+      .where('f2', '<', 'abc')
+      .countOver('f0', 'count');
+    const query = builder.build();
+    test.strictSame(
+      query,
+      'SELECT (COUNT("f0") OVER()) AS "count" FROM "table" WHERE "f1" = $1 AND "f2" < $2'
+    );
+    test.strictSame(params.build(), [3, 'abc']);
+  }
+);
+
 test.testSync('Select few where avg', (test, { builder, params }) => {
   builder.from('table').select('f1', 'f2').where('f1', '=', 3).avg('f0');
   // Note that this is not a correct PostgreSQL query as the select fields
