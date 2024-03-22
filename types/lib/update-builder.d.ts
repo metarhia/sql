@@ -1,5 +1,5 @@
 import { ParamsBuilder } from './params-builder';
-import { QueryBuilderOptions } from './query-builder';
+import { QueryBuilder, QueryBuilderOptions } from './query-builder';
 import { QueryConditionsBuilder } from './query-conditions-builder';
 import {
   SelectBuilder,
@@ -23,7 +23,7 @@ export class UpdateBuilder extends QueryConditionsBuilder<
 
   sets<T extends object>(obj: T): this;
 
-  with(alias: string, sql: SelectQueryValue): this;
+  with(alias: string | QueryBuilder, sql: SelectQueryValue): this;
 
   select(): SelectBuilder;
 }

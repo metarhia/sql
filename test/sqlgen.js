@@ -2035,3 +2035,19 @@ test.testSync(
     test.strictSame(params.build(), [42]);
   }
 );
+
+test.testSync(
+  'Select with clause fn and nested',
+  (test, { builder, params }) => {
+    builder
+      .with(builder.raw('sub(b)'), (b) => b.from('table2').whereEq('a', 42))
+      .from('table')
+      .whereIn('f1', builder.nested().from('sub'));
+    const query = builder.build();
+    test.strictSame(
+      query,
+      'WITH sub(b) AS (SELECT * FROM "table2" WHERE "a" = $1) SELECT * FROM "table" WHERE "f1" IN (SELECT * FROM "sub")'
+    );
+    test.strictSame(params.build(), [42]);
+  }
+);
