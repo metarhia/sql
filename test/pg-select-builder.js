@@ -41,3 +41,17 @@ test.testSync('must provide PgSelectBuilder in select', (test, { builder }) => {
   });
   builder.build();
 });
+
+test.testSync('pg select with cast ::', (test, { builder, params }) => {
+  builder
+    .from('table')
+    .select('f1::text')
+    .selectAs('f2::int', 'ii')
+    .where('f2', '=', 3);
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'SELECT "f1"::text, "f2"::int AS "ii" FROM "table" WHERE "f2" = $1'
+  );
+  test.strictSame(params.build(), [3]);
+});

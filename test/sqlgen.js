@@ -1942,3 +1942,18 @@ test.testSync('Select select nested as', (test, { builder, params }) => {
   );
   test.strictSame(params.build(), [42, 42]);
 });
+
+test.testSync('Select fully qualified field', (test, { builder }) => {
+  builder
+    .select('table1.*')
+    .select('table2.name')
+    .selectAs('table2.name2', 'n2')
+    .from('table1')
+    .innerJoin('table2', 'table2.t1id', 'table1.id');
+  const query = builder.build();
+
+  test.strictSame(
+    query,
+    'SELECT "table1".*, "table2"."name", "table2"."name2" AS "n2" FROM "table1" INNER JOIN "table2" ON "table2"."t1id" = "table1"."id"'
+  );
+});

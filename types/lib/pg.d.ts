@@ -1,27 +1,20 @@
 import { PostgresParamsBuilder } from './pg-params-builder';
-import { SelectBuilder } from './select-builder';
+import { SelectBuilderOptions } from './select-builder';
 import { PgInsertBuilder } from './pg-insert-builder';
-import { UpdateBuilder } from './update-builder';
-import { DeleteBuilder } from './delete-builder';
+import { UpdateBuilder, UpdateBuilderOptions } from './update-builder';
+import { DeleteBuilder, DeleteBuilderOptions } from './delete-builder';
 import { PgSelectBuilder } from './pg-select-builder';
+import { InsertBuilderOptions } from './insert-builder';
 
 export const pg: typeof pgSelect;
 
-export const pgSelect: <T>(
-  handler?: (builder: PgSelectBuilder, params: PostgresParamsBuilder) => void
-) => PgSelectBuilder;
+export const pgSelect: (options?: SelectBuilderOptions) => PgSelectBuilder;
 
-export const pgInsert: <T>(
-  handler?: (builder: PgInsertBuilder, params: PostgresParamsBuilder) => void
-) => PgInsertBuilder;
+export const pgInsert: (options?: InsertBuilderOptions) => PgInsertBuilder;
 
-export const pgUpdate: <T>(
-  handler?: (builder: UpdateBuilder, params: PostgresParamsBuilder) => void
-) => UpdateBuilder;
+export const pgUpdate: (options?: UpdateBuilderOptions) => UpdateBuilder;
 
-export const pgDelete: <T>(
-  handler?: (builder: DeleteBuilder, params: PostgresParamsBuilder) => void
-) => DeleteBuilder;
+export const pgDelete: (options?: DeleteBuilderOptions) => DeleteBuilder;
 
 export const pgQuerySelect: <T>(
   handler?: (builder: PgSelectBuilder, params: PostgresParamsBuilder) => void

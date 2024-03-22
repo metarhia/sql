@@ -179,11 +179,11 @@
     - [PostgresParamsBuilder.prototype.constructor](#postgresparamsbuilderprototypeconstructor)
     - [PostgresParamsBuilder.prototype.add](#postgresparamsbuilderprototypeaddvalue-options)
     - [PostgresParamsBuilder.prototype.build](#postgresparamsbuilderprototypebuild)
-  - [pg](#pghandler)
-  - [pgSelect](#pgselecthandler)
-  - [pgInsert](#pginserthandler)
-  - [pgUpdate](#pgupdatehandler)
-  - [pgDelete](#pgdeletehandler)
+  - [pg](#pgoptions)
+  - [pgSelect](#pgselectoptions)
+  - [pgInsert](#pginsertoptions)
+  - [pgUpdate](#pgupdateoptions)
+  - [pgDelete](#pgdeleteoptions)
   - [pgQuerySelect](#pgqueryselectpg-handler)
   - [pgQueryInsert](#pgqueryinsertpg-handler)
   - [pgQueryUpdate](#pgqueryupdatepg-handler)
@@ -591,15 +591,15 @@ _Returns:_ `<any>`
 
 Generic building method that must return the parameters object
 
-### pg(handler)
+### pg(options)
 
-### pgSelect(handler)
+### pgSelect(options)
 
-### pgInsert(handler)
+### pgInsert(options)
 
-### pgUpdate(handler)
+### pgUpdate(options)
 
-### pgDelete(handler)
+### pgDelete(options)
 
 ### pgQuerySelect(pg, handler)
 
