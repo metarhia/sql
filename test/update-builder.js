@@ -141,3 +141,37 @@ test.testSync(
     test.strictSame(params.build(), [42, 1, false]);
   }
 );
+
+test.testSync('Update "with" clause', (test, { builder, params }) => {
+  builder
+    .with('sub', builder.select().from('table2').whereEq('a', 42))
+    .table('Table')
+    .sets({
+      a: builder.raw('"sub"."b"'),
+      b: false,
+    })
+    .from('sub');
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'WITH "sub" AS (SELECT * FROM "table2" WHERE "a" = $1) UPDATE "Table" SET "a" = ("sub"."b"), "b" = $2 FROM "sub"'
+  );
+  test.strictSame(params.build(), [42, false]);
+});
+
+test.testSync('Update "with" clause fn', (test, { builder, params }) => {
+  builder
+    .with('sub', (b) => b.from('table2').whereEq('a', 42))
+    .table('Table')
+    .sets({
+      a: builder.raw('"sub"."b"'),
+      b: false,
+    })
+    .from('sub');
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'WITH "sub" AS (SELECT * FROM "table2" WHERE "a" = $1) UPDATE "Table" SET "a" = ("sub"."b"), "b" = $2 FROM "sub"'
+  );
+  test.strictSame(params.build(), [42, false]);
+});

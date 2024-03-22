@@ -55,3 +55,20 @@ test.testSync('pg select with cast ::', (test, { builder, params }) => {
   );
   test.strictSame(params.build(), [3]);
 });
+
+test.testSync('Select with clause', (test, { builder, params }) => {
+  builder
+    .with(
+      'sub',
+      builder.nested().distinctOn('f').from('table2').whereEq('a', 42)
+    )
+    .from('table')
+    .whereEq('f1', 3)
+    .leftJoin('sub', 'b', 'f2');
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'WITH "sub" AS (SELECT DISTINCT ON ("f") * FROM "table2" WHERE "a" = $1) SELECT * FROM "table" LEFT OUTER JOIN "sub" ON "b" = "f2" WHERE "f1" = $2'
+  );
+  test.strictSame(params.build(), [42, 3]);
+});

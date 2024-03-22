@@ -1,4 +1,4 @@
-import { SelectBuilder } from './select-builder';
+import { SelectBuilder, SelectQueryValue } from './select-builder';
 import { QueryBuilder, QueryValue } from './query-builder';
 
 export type PgSelectConditionValue =
@@ -6,6 +6,12 @@ export type PgSelectConditionValue =
   | ((builder: PgSelectBuilder) => QueryBuilder)
   | QueryValue;
 
+export type PgSelectQueryValue =
+  | QueryBuilder
+  | ((builder: PgSelectBuilder) => QueryBuilder);
+
 export class PgSelectBuilder extends SelectBuilder<PgSelectConditionValue> {
+  with(alias: string, sql: PgSelectQueryValue): this;
+
   distinctOn(keyOrExpr: string | '*' | QueryBuilder): this;
 }

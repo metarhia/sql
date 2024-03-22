@@ -1,7 +1,11 @@
 import { ParamsBuilder } from './params-builder';
 import { QueryBuilderOptions } from './query-builder';
 import { QueryConditionsBuilder } from './query-conditions-builder';
-import { SelectConditionValue } from './select-builder';
+import {
+  SelectBuilder,
+  SelectConditionValue,
+  SelectQueryValue,
+} from './select-builder';
 
 export interface UpdateBuilderOptions extends QueryBuilderOptions {}
 
@@ -18,4 +22,8 @@ export class UpdateBuilder extends QueryConditionsBuilder<
   set(key: string, value: SelectConditionValue): this;
 
   sets<T extends object>(obj: T): this;
+
+  with(alias: string, sql: SelectQueryValue): this;
+
+  select(): SelectBuilder;
 }

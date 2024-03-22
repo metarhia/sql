@@ -1991,3 +1991,31 @@ test.testSync('Select fully qualified field', (test, { builder }) => {
     'SELECT "table1".*, "table2"."name", "table2"."name2" AS "n2" FROM "table1" INNER JOIN "table2" ON "table2"."t1id" = "table1"."id"'
   );
 });
+
+test.testSync('Select with clause', (test, { builder, params }) => {
+  builder
+    .with('sub', builder.nested().from('table2').whereEq('a', 42))
+    .from('table')
+    .whereEq('f1', 3)
+    .leftJoin('sub', 'b', 'f2');
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'WITH "sub" AS (SELECT * FROM "table2" WHERE "a" = $1) SELECT * FROM "table" LEFT OUTER JOIN "sub" ON "b" = "f2" WHERE "f1" = $2'
+  );
+  test.strictSame(params.build(), [42, 3]);
+});
+
+test.testSync('Select with clause fn', (test, { builder, params }) => {
+  builder
+    .with('sub', (b) => b.from('table2').whereEq('a', 42))
+    .from('table')
+    .whereEq('f1', 3)
+    .leftJoin('sub', 'b', 'f2');
+  const query = builder.build();
+  test.strictSame(
+    query,
+    'WITH "sub" AS (SELECT * FROM "table2" WHERE "a" = $1) SELECT * FROM "table" LEFT OUTER JOIN "sub" ON "b" = "f2" WHERE "f1" = $2'
+  );
+  test.strictSame(params.build(), [42, 3]);
+});
