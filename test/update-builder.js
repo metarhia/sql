@@ -147,7 +147,7 @@ test.testSync('Update "with" clause', (test, { builder, params }) => {
     .with('sub', builder.select().from('table2').whereEq('a', 42))
     .table('Table')
     .sets({
-      a: builder.raw('"sub"."b"'),
+      a: builder.key('sub.b'),
       b: false,
     })
     .from('sub');
@@ -164,7 +164,7 @@ test.testSync('Update "with" clause fn', (test, { builder, params }) => {
     .with('sub', (b) => b.from('table2').whereEq('a', 42))
     .table('Table')
     .sets({
-      a: builder.raw('"sub"."b"'),
+      a: builder.key('sub.b'),
       b: false,
     })
     .from('sub');

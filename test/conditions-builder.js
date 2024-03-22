@@ -252,6 +252,12 @@ test.testSync('condition or like', (test, { builder, params }) => {
   test.strictSame(params.build(), ['abc']);
 });
 
+test.testSync('condition or like key', (test, { builder, params }) => {
+  builder.or('f1', 'like', builder.key('f2'));
+  test.strictSame(builder.build(), '"f1" LIKE ("f2")');
+  test.strictSame(params.build(), []);
+});
+
 test.testSync('condition like or like', (test, { builder, params }) => {
   builder.and('f1', 'like', 'abc').or('f2', 'like', 'cba');
   test.strictSame(builder.build(), '"f1" LIKE $1 OR "f2" LIKE $2');
@@ -272,6 +278,12 @@ test.testSync('condition !=', (test, { builder, params }) => {
   builder.and('f1', '!=', 'abc');
   test.strictSame(builder.build(), '"f1" <> $1');
   test.strictSame(params.build(), ['abc']);
+});
+
+test.testSync('condition != key', (test, { builder, params }) => {
+  builder.and('f1', '!=', builder.key('f2'));
+  test.strictSame(builder.build(), '"f1" <> ("f2")');
+  test.strictSame(params.build(), []);
 });
 
 test.testSync('condition or !=', (test, { builder, params }) => {

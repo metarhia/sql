@@ -5,6 +5,7 @@
     - [QueryBuilder.prototype.constructor](#querybuilderprototypeconstructorparams-options)
     - [QueryBuilder.prototype.build](#querybuilderprototypebuild)
     - [QueryBuilder.prototype.buildParams](#querybuilderprototypebuildparams)
+    - [QueryBuilder.prototype.key](#querybuilderprototypekeykey)
     - [QueryBuilder.prototype.makeKeyOrExpr](#querybuilderprototypemakekeyorexprvalue-wrap--false)
     - [QueryBuilder.prototype.makeParamValue](#querybuilderprototypemakeparamvaluevalue)
     - [QueryBuilder.prototype.nested](#querybuilderprototypenested)
@@ -64,6 +65,7 @@
     - [SelectBuilder.prototype.avg](#selectbuilderprototypeavgfield-alias)
     - [SelectBuilder.prototype.build](#selectbuilderprototypebuild)
     - [SelectBuilder.prototype.count](#selectbuilderprototypecountfield---alias)
+    - [SelectBuilder.prototype.countOver](#selectbuilderprototypecountoverfield---alias)
     - [SelectBuilder.prototype.crossJoin](#selectbuilderprototypecrossjointablename)
     - [SelectBuilder.prototype.crossJoinAs](#selectbuilderprototypecrossjoinastablename-alias)
     - [SelectBuilder.prototype.distinct](#selectbuilderprototypedistinct)
@@ -101,6 +103,7 @@
     - [SelectBuilder.prototype.selectFn](#selectbuilderprototypeselectfnfn-field-alias)
     - [SelectBuilder.prototype.selectRaw](#selectbuilderprototypeselectrawsqlorbuilder)
     - [SelectBuilder.prototype.sum](#selectbuilderprototypesumfield-alias)
+    - [SelectBuilder.prototype.with](#selectbuilderprototypewithalias-sql)
   - [RawBuilder](#class-rawbuilder-extends-querybuilder)
     - [RawBuilder.prototype.constructor](#rawbuilderprototypeconstructorsqltemplate)
     - [RawBuilder.prototype.build](#rawbuilderprototypebuild)
@@ -108,10 +111,12 @@
     - [UpdateBuilder.prototype.constructor](#updatebuilderprototypeconstructorparams-options)
     - [UpdateBuilder.prototype.build](#updatebuilderprototypebuild)
     - [UpdateBuilder.prototype.from](#updatebuilderprototypefromtablename-alias)
+    - [UpdateBuilder.prototype.select](#updatebuilderprototypeselect)
     - [UpdateBuilder.prototype.set](#updatebuilderprototypesetcolumn-value)
     - [UpdateBuilder.prototype.setKey](#updatebuilderprototypesetkeycolumn-key)
     - [UpdateBuilder.prototype.sets](#updatebuilderprototypesetsobj)
     - [UpdateBuilder.prototype.table](#updatebuilderprototypetabletablename-alias)
+    - [UpdateBuilder.prototype.with](#updatebuilderprototypewithalias-sql)
   - [DeleteBuilder](#class-deletebuilder-extends-queryconditionsbuilder)
     - [DeleteBuilder.prototype.constructor](#deletebuilderprototypeconstructorparams-options)
     - [DeleteBuilder.prototype.build](#deletebuilderprototypebuild)
@@ -212,6 +217,8 @@ Build and return the SQL query
 _Returns:_ `<Array<unknown>>`
 
 Build params for this query
+
+#### QueryBuilder.prototype.key(key)
 
 #### QueryBuilder.prototype.makeKeyOrExpr(value, wrap = false)
 
@@ -331,6 +338,8 @@ Build params for this query
 
 #### SelectBuilder.prototype.count(field = '\*', alias)
 
+#### SelectBuilder.prototype.countOver(field = '\*', alias)
+
 #### SelectBuilder.prototype.crossJoin(tableName)
 
 #### SelectBuilder.prototype.crossJoinAs(tableName, alias)
@@ -405,6 +414,8 @@ Build params for this query
 
 #### SelectBuilder.prototype.sum(field, alias)
 
+#### SelectBuilder.prototype.with(alias, sql)
+
 ### class RawBuilder extends [QueryBuilder][sql-querybuilder]
 
 #### RawBuilder.prototype.constructor(sqlTemplate)
@@ -423,6 +434,8 @@ Build params for this query
 
 #### UpdateBuilder.prototype.from(tableName, alias)
 
+#### UpdateBuilder.prototype.select()
+
 #### UpdateBuilder.prototype.set(column, value)
 
 #### UpdateBuilder.prototype.setKey(column, key)
@@ -430,6 +443,8 @@ Build params for this query
 #### UpdateBuilder.prototype.sets(obj)
 
 #### UpdateBuilder.prototype.table(tableName, alias)
+
+#### UpdateBuilder.prototype.with(alias, sql)
 
 ### class DeleteBuilder extends [QueryConditionsBuilder][sql-queryconditionsbuilder]
 

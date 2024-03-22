@@ -25,6 +25,8 @@ export class QueryBuilder<O extends QueryBuilderOptions = QueryBuilderOptions> {
 
   raw(sqlTemplate: SqlTemplate): RawBuilder;
 
+  key(key: string): RawBuilder;
+
   nested(): this;
 
   // Build and return the SQL query.
