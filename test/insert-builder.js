@@ -6,6 +6,7 @@ const {
   SelectBuilder,
   InsertBuilder,
 } = require('../sql.js');
+const { UpdateBuilder } = require('../lib/update-builder.js');
 
 const test = testSync('InsertBuilder tests', null, { parallelSubtests: true });
 
@@ -92,3 +93,32 @@ test.testSync(
     test.strictSame(params.build(), [42, 1, false]);
   }
 );
+
+test.testSync('insert with from nested update', (test, { builder, params }) => {
+  builder
+    .with(
+      'upd',
+      new UpdateBuilder(builder.params)
+        .table('employees')
+        .set('sales_count', builder.raw('"sales_count" + 1'))
+        .whereEq(
+          'id',
+          builder
+            .select()
+            .from('accounts')
+            .select('sales_person')
+            .whereEq('name', 'Acme Corporation')
+        )
+        .returning('*')
+    )
+    .table('employees_log')
+    .from(
+      builder.select().from('upd').select('*').selectRaw('current_timestamp')
+    );
+
+  test.strictSame(
+    builder.build(),
+    `WITH "upd" AS (UPDATE "employees" SET "sales_count" = ("sales_count" + 1) WHERE "id" = (SELECT "sales_person" FROM "accounts" WHERE "name" = $1) RETURNING *) INSERT INTO "employees_log" SELECT *, current_timestamp FROM "upd"`
+  );
+  test.strictSame(params.build(), ['Acme Corporation']);
+});

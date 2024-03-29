@@ -26,4 +26,6 @@ export class UpdateBuilder extends QueryConditionsBuilder<
   with(alias: string | QueryBuilder, sql: SelectQueryValue): this;
 
   select(): SelectBuilder;
+
+  returning(key: string | '*' | QueryBuilder, alias?: string): this;
 }

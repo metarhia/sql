@@ -111,6 +111,7 @@
     - [UpdateBuilder.prototype.constructor](#updatebuilderprototypeconstructorparams-options)
     - [UpdateBuilder.prototype.build](#updatebuilderprototypebuild)
     - [UpdateBuilder.prototype.from](#updatebuilderprototypefromtablename-alias)
+    - [UpdateBuilder.prototype.returning](#updatebuilderprototypereturningkey-alias)
     - [UpdateBuilder.prototype.select](#updatebuilderprototypeselect)
     - [UpdateBuilder.prototype.set](#updatebuilderprototypesetcolumn-value)
     - [UpdateBuilder.prototype.setKey](#updatebuilderprototypesetkeycolumn-key)
@@ -124,9 +125,12 @@
   - [InsertBuilder](#class-insertbuilder-extends-querybuilder)
     - [InsertBuilder.prototype.constructor](#insertbuilderprototypeconstructorparams-options)
     - [InsertBuilder.prototype.build](#insertbuilderprototypebuild)
+    - [InsertBuilder.prototype.from](#insertbuilderprototypefromsql)
+    - [InsertBuilder.prototype.select](#insertbuilderprototypeselect)
     - [InsertBuilder.prototype.table](#insertbuilderprototypetabletablename-alias)
     - [InsertBuilder.prototype.value](#insertbuilderprototypevaluekey-value)
     - [InsertBuilder.prototype.values](#insertbuilderprototypevaluesobj)
+    - [InsertBuilder.prototype.with](#insertbuilderprototypewithalias-sql)
   - [PgInsertBuilder](#class-pginsertbuilder-extends-insertbuilder)
     - [PgInsertBuilder.prototype.constructor](#pginsertbuilderprototypeconstructorparams-options)
     - [PgInsertBuilder.prototype.build](#pginsertbuilderprototypebuild)
@@ -434,6 +438,8 @@ Build params for this query
 
 #### UpdateBuilder.prototype.from(tableName, alias)
 
+#### UpdateBuilder.prototype.returning(key, alias)
+
 #### UpdateBuilder.prototype.select()
 
 #### UpdateBuilder.prototype.set(column, value)
@@ -460,11 +466,17 @@ Build params for this query
 
 #### InsertBuilder.prototype.build()
 
+#### InsertBuilder.prototype.from(sql)
+
+#### InsertBuilder.prototype.select()
+
 #### InsertBuilder.prototype.table(tableName, alias)
 
 #### InsertBuilder.prototype.value(key, value)
 
 #### InsertBuilder.prototype.values(obj)
+
+#### InsertBuilder.prototype.with(alias, sql)
 
 ### class PgInsertBuilder extends [InsertBuilder][sql-insertbuilder]
 

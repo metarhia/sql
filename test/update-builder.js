@@ -175,3 +175,24 @@ test.testSync('Update "with" clause fn', (test, { builder, params }) => {
   );
   test.strictSame(params.build(), [42, false]);
 });
+
+test.testSync('Update returning', (test, { builder, params }) => {
+  builder
+    .table('employees')
+    .set('sales_count', builder.raw('"sales_count" + 1'))
+    .whereEq(
+      'id',
+      builder
+        .select()
+        .from('accounts')
+        .select('sales_person')
+        .whereEq('name', 'Acme Corporation')
+    )
+    .returning('*');
+  const query = builder.build();
+  test.strictSame(
+    query,
+    `UPDATE "employees" SET "sales_count" = ("sales_count" + 1) WHERE "id" = (SELECT "sales_person" FROM "accounts" WHERE "name" = $1) RETURNING *`
+  );
+  test.strictSame(params.build(), ['Acme Corporation']);
+});
