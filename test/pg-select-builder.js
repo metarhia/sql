@@ -47,13 +47,14 @@ test.testSync('pg select with cast ::', (test, { builder, params }) => {
     .from('table')
     .select('f1::text')
     .selectAs('f2::int', 'ii')
-    .where('f2', '=', 3);
+    .where('f2', '=', 3)
+    .whereILike('f3::text', 3);
   const query = builder.build();
   test.strictSame(
     query,
-    'SELECT "f1"::text, "f2"::int AS "ii" FROM "table" WHERE "f2" = $1'
+    'SELECT "f1"::text, "f2"::int AS "ii" FROM "table" WHERE "f2" = $1 AND "f3"::text ILIKE $2'
   );
-  test.strictSame(params.build(), [3]);
+  test.strictSame(params.build(), [3, 3]);
 });
 
 test.testSync('Select with clause', (test, { builder, params }) => {
