@@ -196,3 +196,67 @@ test.testSync('Update returning', (test, { builder, params }) => {
   );
   test.strictSame(params.build(), ['Acme Corporation']);
 });
+
+test.testSync('Update from select', (test, { builder, params }) => {
+  builder
+    .table('employees')
+    .set('sales_count', builder.raw('"sales_count" + 1'))
+    .set('sales_no', builder.key('d.no'))
+    .whereEq(
+      'id',
+      builder
+        .select()
+        .from('accounts')
+        .select('sales_person')
+        .whereEq('name', 'Acme Corporation')
+    )
+    .fromSelect(
+      (b) =>
+        b
+          .select('d.no')
+          .fromRaw(`unnest(${b.params.add([1, 2, 3])}::text[]) AS "d"("no")`),
+      'd'
+    )
+    .returning('*');
+  const query = builder.build();
+  test.strictSame(
+    query,
+    `UPDATE "employees"
+     SET "sales_count" = ("sales_count" + 1),
+         "sales_no" = ("d"."no")
+     FROM (SELECT "d"."no" FROM unnest($1::text[]) AS "d"("no")) AS "d"
+     WHERE "id" = (SELECT "sales_person" FROM "accounts" WHERE "name" = $2) RETURNING *`
+      .replace(/\n/, '')
+      .replace(/\s+/gi, ' ')
+  );
+  test.strictSame(params.build(), [[1, 2, 3], 'Acme Corporation']);
+});
+
+test.testSync('Update from table', (test, { builder, params }) => {
+  builder
+    .table('employees')
+    .set('sales_count', builder.raw('"sales_count" + 1'))
+    .set('sales_no', builder.key('t2.f1'))
+    .whereEq(
+      'id',
+      builder
+        .select()
+        .from('accounts')
+        .select('sales_person')
+        .whereEq('name', 'Acme Corporation')
+    )
+    .fromSelect('"table2"', 't2')
+    .returning('*');
+  const query = builder.build();
+  test.strictSame(
+    query,
+    `UPDATE "employees"
+     SET "sales_count" = ("sales_count" + 1),
+         "sales_no" = ("t2"."f1")
+     FROM "table2" AS "t2"
+     WHERE "id" = (SELECT "sales_person" FROM "accounts" WHERE "name" = $1) RETURNING *`
+      .replace(/\n/, '')
+      .replace(/\s+/gi, ' ')
+  );
+  test.strictSame(params.build(), ['Acme Corporation']);
+});

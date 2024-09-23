@@ -25,6 +25,8 @@ export class SelectBuilder<
 
   from(tableName: string, alias?: string): this;
 
+  fromRaw(sql: string | QueryBuilder): this;
+
   with(alias: string | QueryBuilder, sql: SelectQueryValue): this;
 
   select(...fields: Array<string | CV>): this;

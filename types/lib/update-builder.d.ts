@@ -19,6 +19,8 @@ export class UpdateBuilder extends QueryConditionsBuilder<
 
   from(tableName: string, alias?: string): this;
 
+  fromSelect(sql: SelectConditionValue, alias?: string): this;
+
   set(key: string, value: SelectConditionValue): this;
 
   sets<T extends object>(obj: T): this;
