@@ -5,6 +5,7 @@ import {
   QueryBuilderOptions,
   SqlTemplate,
 } from './query-builder';
+import { ConditionsQueryValue } from './conditions-builder';
 
 // Utility class for all proxy Conditions methods.
 export class QueryConditionsBuilder<
@@ -14,6 +15,7 @@ export class QueryConditionsBuilder<
   constructor(params: ParamsBuilder, options?: O);
 
   where(key: string, cond: string, value: CV): this;
+  where(cond: ConditionsQueryValue): this;
 
   whereKey(leftKey: string, cond: string, rightKey: string): this;
 
@@ -40,6 +42,7 @@ export class QueryConditionsBuilder<
   orWhereLessEq(key: string, value: CV): this;
 
   orWhere(key: string, cond: string, value: CV): this;
+  orWhere(cond: ConditionsQueryValue): this;
 
   orWhereKey(leftKey: string, cond: string, rightKey: string): this;
 

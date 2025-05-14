@@ -12,6 +12,7 @@ const { ConditionsBuilder } = require('./lib/conditions-builder.js');
 const { ParamsBuilder } = require('./lib/params-builder.js');
 const { PostgresParamsBuilder } = require('./lib/pg-params-builder.js');
 const pg = require('./lib/pg.js');
+const utils = require('./lib/utils');
 
 module.exports = {
   QueryBuilder,
@@ -27,4 +28,5 @@ module.exports = {
   ParamsBuilder,
   PostgresParamsBuilder,
   ...pg,
+  ...utils,
 };

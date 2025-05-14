@@ -13,3 +13,4 @@ export * from './lib/update-builder';
 export * from './lib/pg-insert-builder';
 export * from './lib/pg-select-builder';
 export * from './lib/pg';
+export * from './lib/utils';

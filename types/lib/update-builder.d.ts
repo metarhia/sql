@@ -30,4 +30,6 @@ export class UpdateBuilder extends QueryConditionsBuilder<
   select(): SelectBuilder;
 
   returning(key: string | '*' | QueryBuilder, alias?: string): this;
+
+  isNotEmpty(): boolean;
 }

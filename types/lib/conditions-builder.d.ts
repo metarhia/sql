@@ -8,7 +8,7 @@ import {
 
 export interface ConditionsBuilderOptions extends QueryBuilderOptions {}
 
-type ConditionsQueryValue =
+export type ConditionsQueryValue =
   | QueryBuilder
   | ((builder: ConditionsBuilder) => QueryBuilder);
 
